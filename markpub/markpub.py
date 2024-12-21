@@ -34,7 +34,7 @@ import yaml
 
 # pip install - mistletoe based Markdown to HTML conversion
 from mistletoe import Document
-from src.mistletoe_renderer.massivewiki import MassiveWikiRenderer
+from markpub.mistletoe_renderer.massivewiki import MassiveWikiRenderer
 
 # wiki page links, backlinks table
 wiki_pagelinks = {}
