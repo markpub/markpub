@@ -25,7 +25,7 @@
 	<input type="text" placeholder="type search words" id="inputID">
 	<button type="button" onclick="doSearch();" id="searchButton">Search</button>
         {% else %}
-	<p>Lunr search index is not present. It must be enabled by passing the <code>--lunr</code> flag to <code>mwb.py</code>.</p>
+	<p>Lunr search index is not present. It must be enabled by passing the <code>--lunr</code> flag to <code>markpub.py</code>.</p>
 	<p>Check the Massive Wiki Builder documentation for more details.</p>
         {% endif %}
 	<div id="renderList"></div>
@@ -87,6 +87,6 @@
       })
     </script>
   {% include '_footer.html' %}
-  <script src="{{websiteroot}}/mwb-static/js/script.js"></script>
+  <script src="{{websiteroot}}/markpub-static/js/script.js"></script>
 </body>
 </html>

@@ -9,6 +9,6 @@ venv
 # Node
 node_modules
 
-# NXC
-.nxc/output/*
+# MARKPUB
+.markpub/output/*
 
