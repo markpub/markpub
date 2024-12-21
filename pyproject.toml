@@ -1,0 +1,31 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "markpub"
+version = "0.4.0"
+description = "Initialize and build (web publish) Markdown and Massive Wiki sites."
+authors = [
+  "Bill Anderson <band@acm.org>",
+  "Peter Kaminski <kaminski@istori.com"
+]
+readme = "README.md"
+homepage = "https://github.com/MarkPub/markpub"
+
+packages = [
+    { include = "src" },
+    { include = "src/mistletoe_renderer" },
+]
+    
+[tool.poetry.dependencies]
+python = "^3.8"
+Jinja2 = "^3.1.2"
+MarkupSafe = "^2.1.3"
+mistletoe = "^1.1.0"
+pyyaml = "^6.0.1"
+six = "^1.16.0"
+python-dateutil = "^2.9.0.post0"
+
+[tool.poetry.scripts]
+nxc = "src.markpub:main"
