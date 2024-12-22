@@ -3,7 +3,7 @@ Massive Wiki support for mistletoe.
 """
 # set up logging
 import logging
-logger = logging.getLogger('nxc.massivewiki')
+logger = logging.getLogger('markpub.massivewiki')
 
 from itertools import chain
 from mistletoe import Document
