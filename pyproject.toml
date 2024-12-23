@@ -4,8 +4,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "markpub"
-version = "0.4.3"
-description = "Initialize and build (web publish) Markdown and Massive Wiki sites."
+version = "0.4.4"
+description = "Build (web publish) Markdown and Massive Wiki sites."
 license = "MIT"
 authors = [
   "Bill Anderson <band@acm.org>",
