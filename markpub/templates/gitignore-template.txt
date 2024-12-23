@@ -1,4 +1,4 @@
-# baseline gitignore for NXC
+# baseline gitignore for MARKPUB
 # for Obsidian.md vaults
 .obsidian/*
 
