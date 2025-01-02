@@ -374,9 +374,6 @@ def build_site(args):
 
         # copy static assets directory
         logger.debug("copy static assets directory")
-        if os.path.exists(Path(dir_templates) / 'mwb-static'):
-            logger.warning("mwb-static is deprecated. please use 'static', and put mwb-static inside static - see docs")
-            shutil.copytree(Path(dir_templates) / 'mwb-static', Path(dir_output) / 'mwb-static')
         if os.path.exists(Path(dir_templates) / 'static'):
             shutil.copytree(Path(dir_templates) / 'static', Path(dir_output), dirs_exist_ok=True)
 
