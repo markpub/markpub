@@ -107,7 +107,7 @@ Enter Git repository url (for Edit page button; optional): # e.g., github.com/ba
 In `.markpub/`:
 
 ```shell
-markpub -i .. -o output --lunr --commits
+markpub build -i .. -o output --lunr --commits
 ```
 This command builds html pages for all Markdown pages rooted in the parent directory, and writes them to the `./output` directory. A Lunr search index is created, and information from the latest commit of each file is used to populate “All Pages” and “Recent Pages” web pages.
 
@@ -119,14 +119,14 @@ If you want to print a log what is happening during the build, set the `LOGLEVEL
 On the command line, do:
 
 ```shell
-LOGLEVEL=DEBUG markpub -i .. -o output --lunr --commits
+LOGLEVEL=DEBUG markpub build -i .. -o output --lunr --commits
 ```
 
 or:
 
 ```shell
 export LOGLEVEL=DEBUG
-markpub -i .. -o output --lunr --commits
+markpub build -i .. -o output --lunr --commits
 ```
 
 In `netlify.toml`, do:
@@ -141,7 +141,7 @@ In `netlify.toml`, do:
 To output authors, commit messages, and timestamps for each page in the All Pages page, include the `--commits` flag:
 
 ```shell
-markpub -i .. -o output --commits
+markpub build -i .. -o output --commits
 ```
 
 In the `all-pages.html` template (template may have a different file name), the following variables are available when `--commits` is active:
@@ -157,7 +157,7 @@ If `--commits` is not active, each of those variables is set to empty string `''
 To build an index for the [Lunr](https://lunrjs.com/) search engine, include the `--lunr` flag:
 
 ```shell
-markpub -i .. -o output --lunr
+markpub build -i .. -o output --lunr
 ```
 
 Lunr is a JavaScript library, so Node.js (`node`) and the Lunr library must be installed.
@@ -215,7 +215,7 @@ For Netlify deploys, you can include a `netlify.toml` file like this at the root
   ignore = "/bin/false"
   base = ".markpub"
   publish = "output"
-  command = "markpub -i ../.. -o ../output --lunr --commits
+  command = "markpub build -i ../.. -o ../output --lunr --commits
 [build.environment]
   PYTHON_VERSION = "3.8"
 ```
@@ -225,7 +225,7 @@ It is recommended that you make a copy of `massive-wiki-themes` called `this-wik
 The build command would then be (substitute your theme name instead of `alto` as necessary:
 
 ```shell
-./mwb.py -c mwb.yaml -w ../.. -o ../output -t ../this-wiki-themes/alto
+markpub build -i ../.. -o ../output -t ../this-wiki-themes/alto
 ```
 
  
@@ -242,7 +242,7 @@ python3 -m http.server
 
 MARKPUB uses a simple theming system.  All the files for one theme are placed in a subdirectory in the themes directory, the default location is `document-collection/.markpub/this-website-themes`. The default installed them is in `this-website-themes/dolce`.  Other themes can be added to this directory and used in the build command by passing the `--themes` argument. For example, to use a theme installed in `this-website-themes/alto`, the build command is:
 ```shell
-(venv)$ markpub -i .. -o output -t this-website-themes/alto --lunr --commits
+(venv)$ markpub build -i .. -o output -t this-website-themes/alto --lunr --commits
 ```
 
 MARKPUB builds the pages with the Jinja2 templating enging, so you can use Jinja2 directives within the HTML files to include document metadata and markdown content.  You can also use the Jinja2 `include` functionality to extract reused parts of the page to HTML "partial" files.
