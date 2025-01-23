@@ -2,7 +2,7 @@
 
 ## Overview
 
-MarkPub is a Python-based static site generator that converts collections of Markdown files into static HTML websites. It provides powerful features including:
+MarkPub is a Python-based static site generator that converts collections of Markdown files into static HTML websites. It provides:
 
 - Wiki-style linking between pages with [[double bracket]] syntax
 - Automatic backlinks tracking
@@ -30,8 +30,8 @@ For isolated project-specific installations:
 
 ```bash
 # Create project directory
-mkdir my-wiki-site
-cd my-wiki-site
+mkdir my-document-collection
+cd my-document-collection
 
 # Create and activate virtual environment
 python -m venv venv
@@ -47,12 +47,13 @@ pip install markpub
 ### Initializing a New Site
 
 After installation, initialize a new MarkPub site:
+**TODO**: separate initialization of the current directory from initialization of a separate directory
 
 ```bash
-markpub init my-wiki-site
+markpub init my-document-collection
 ```
 
-During initialization, you'll be prompted for:
+During initialization, you are prompted for:
 - Website title
 - Author name(s)
 - Git repository URL (optional, for Edit button functionality)
@@ -60,7 +61,7 @@ During initialization, you'll be prompted for:
 This creates a directory structure:
 
 ```
-my-wiki-site/
+my-document-collection/
 ├── .markpub/
 │   ├── markpub.yaml           # Site configuration
 │   ├── build-index.js         # Search functionality
@@ -80,7 +81,7 @@ The main configuration file is `.markpub/markpub.yaml`. Key settings include:
 
 ```yaml
 wiki_title: "Your Wiki Title"
-author: "Your Name"
+author: "Your name or names"
 edit_url: "https://github.com/yourusername/yourrepo/edit/"
 edit_branch: "main"
 repo: '<a href="https://github.com/yourusername/yourrepo">github:yourrepo</a>'
@@ -106,6 +107,7 @@ sidebar: Sidebar.md
 ### Building the Site
 
 Basic build command:
+**TODO**: describe local build versus automated build
 
 ```bash
 markpub build -i . -o output
