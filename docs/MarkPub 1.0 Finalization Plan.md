@@ -8,7 +8,11 @@ Goal: Release a production-ready 1.0 version of MarkPub with well-documented fea
 
 ### Core Documentation
 1. `MarkPub User Documentation.md`
-   - Complete reference for all features
+   - Complete reference for all features  
+   - TODO: document steps to enable GitHub pages  
+	   - include `.github/workflows/gh-pagesV1.yml` in `templates` directory
+	   - upon initialization include the repo-name in the `.yml` file build command
+	   - add instructions in User Guide (or Quickstart) on how to set up GitHub Pages for a MarkPub repository  
    - Installation and configuration
    - Command reference
    - Configuration file reference

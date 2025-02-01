@@ -4,7 +4,7 @@
 
 MarkPub is a Python-based static site generator that converts collections of Markdown files into static HTML websites. It provides:
 
-- Wiki-style linking between pages with [[double bracket]] syntax
+- Wiki-style, [[double bracket]] syntax,  linking between pages
 - Automatic backlinks tracking
 - Page transclusion
 - Full-text search capability
@@ -16,11 +16,17 @@ MarkPub is a Python-based static site generator that converts collections of Mar
 
 There are two recommended ways to install MarkPub:
 
+### Pre-requisites
+
+- Python3 is installed
+- You have a GitHub account
+- You have a Netlify account
+
 ### Option 1: System-wide Installation
 
-If you want to install MarkPub globally on your system:
+To install MarkPub globally on your system:
 
-```bash
+```shell
 pip install markpub
 ```
 

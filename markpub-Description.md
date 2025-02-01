@@ -1,14 +1,29 @@
 # markpub Description
 
-**markpub** is a static site generator for turning collections of Markdown documents into static HTML websites. It is implemented as a Python package.
+**markpub** is a static site generator for turning collections of Markdown documents into static HTML websites.  
 
-**markpub** supports wiki links and back links, transclusion, full-text search, as well as standard Markdown features. There is no required organization of the markdown files in the document collection directory or subdirectories. Using **markpub** to initialize a document collection installs a basic website theme that can be altered or replaced.
+**markpub** supports wiki links and back links, transclusion, full-text search, as well as standard Markdown features. There is no required organization of the markdown files in the document collection directory or subdirectories.
+
+Using **markpub** to initialize a document collection installs a website theme that can be altered or replaced.
 
 For document collections that are versioned with Git, the generated website can display a table of all pages in the collection that can be sorted by file name or time of most recent change.
 
+/ basic use case is web publish a collection of Markdown files //
+/ assumption: documents are in a Git repository //
+/ assumption: web publishing is hosted by Netlify or GitHub pages //
+/ prerequisites for deployment: know how to deploy on Netlify from GitHub, or how to deploy GitHub Pages, or know how to get assistance with these deployments //
+
+/ two deployment use cases: (1) add MarkPub to the repository to support automated CI/CD; (2) install MarkPub to support local deployment as well as repository CI/CD //  
+
+/ Quickstart: document prerequisites and one or two ways to deploy a MarkPub website //
+/ information on how to exclude directories and support BlueSky comments in a separate document //
+/ put all other detail information about directory structures and theme management in another document //
+
+
+
 ## Typical Installation Directory Structure
 
-Once installed there is a `.markpub` directory containing a configuration file, the Python and Javascript files, and the website theme files and directories.
+Once installed there is a `.markpub` subdirectory of the document collection directory that contains a configuration file, the Python and Javascript files, and the website theme files and directories.
 
 **markpub** ignores dotfiles and dot-directories, so as it builds, it ignores anything inside (for instance) `.obsidian` or `.markpub` directories. An initialized directory has the following structure:  
 

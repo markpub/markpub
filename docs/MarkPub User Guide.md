@@ -5,11 +5,11 @@ This guide walks through three common use cases for MarkPub:
 2. A blog-style website
 3. A small wiki
 
-For each example, we'll cover setup, content organization, and special considerations.
+For each use case, setup, content organization, and special considerations are described.
 
-## Prerequisites
+## Prerequisites for all use cases
 
-First, install MarkPub. We recommend using a virtual environment:
+First, install MarkPub. Using a virtual environment is recommended:
 
 ```bash
 # Create and enter project directory
@@ -27,9 +27,10 @@ pip install markpub
 
 ## Use Case 1: Simple Personal Website
 
-This example creates a basic personal website with an about page, projects section, and contact information.
+This example creates a basic personal website with a home page with a Sidebar.
 
 ### Setup
+TODO: clarify the working directory for these commands
 
 ```bash
 # Initialize the site
@@ -47,15 +48,11 @@ When prompted:
 ```
 personal-site/
 ├── README.md              # Home page
-├── about.md              # About page
-├── projects/             # Projects directory
-│   ├── project1.md
-│   └── project2.md
-├── contact.md           # Contact page
 └── Sidebar.md          # Navigation
 ```
 
 ### Example Content
+TODO: update this to reflect what MarkPub produces
 
 `README.md` (Home Page):
 ```markdown
@@ -83,8 +80,10 @@ I'm Jane Smith, a software developer based in Portland. This site showcases my w
 ```
 
 ### Deploy to Netlify
+REQUIREMENTS: Netlify account, GitHub account
 
 1. Create a GitHub repository for your site and push your code:
+
 ```bash
 git init
 git add .
@@ -94,6 +93,7 @@ git push -u origin main
 ```
 
 2. Go to [Netlify](https://netlify.com) and sign in with your GitHub account
+TODO: these instructions assume a specific Netlify setup. Do they belong in this document?
 
 3. Click "Add new site" > "Import an existing project"
 
@@ -106,7 +106,9 @@ git push -u origin main
 
 6. Click "Deploy site"
 
-Netlify will now automatically build and deploy your site whenever you push changes to GitHub.
+Netlify will automatically build and deploy your site whenever changes are pushed to GitHub.
+
+QUESTION: do we care about documenting these use cases?
 
 ## Use Case 2: Blog-Style Website
 
