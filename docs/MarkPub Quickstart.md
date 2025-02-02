@@ -8,15 +8,16 @@ These instructions assume the following:
 - Web publishing is hosted by Netlify or GitHub pages.
 
 ### Prerequisites for deployment:  
-- Python3 (Version 3.9 or higher) installed.
-- Facility with using a command-line terminal app.
-- Know how to deploy on Netlify from GitHub, or 
-- Know how to deploy GitHub Pages, or 
-- Know how to get assistance with such deployments.
+- Python3 (Version 3.9 or higher) installed.  
+- Facility with using a command-line terminal app.  
 
-## Basic installation and use
+- Know how to deploy on Netlify from GitHub, or   
+- Know how to deploy GitHub Pages, or  
+- Know how to get assistance with such deployments.  
 
-First, install MarkPub. 
+## Basic installation and use  
+
+First, install MarkPub.  
 ```shell
 pip install markpub
 ```
@@ -38,7 +39,7 @@ Initialization will prompt for:
 
 **Deploy to Netlify**:  
 REQUIREMENTS: GitHub account, and 
-**TODO**: Netlify specific wording of CI/CD connection
+**TODO**: Netlify specific wording of CI/CD connection  
 
 ```shell
 cd /full/path/to/myDocumentCollection
@@ -46,13 +47,14 @@ git commit -am "MarkPub installation updates"
 git push
 ```
 
-Netlify deployment steps are governed by the included `netlify.toml` configuration automatically:
-- Installs all required dependencies
-- Builds with full search functionality
-- Enables Git commit tracking for the Recent Changes page
+Netlify deployment steps are governed by the included `netlify.toml`   
+Netlify deployment:  
+- Installs all required dependencies  
+- Builds with full search functionality  
+- Enables Git commit tracking for the Recent Changes page  
 - Deploys to a public URL
 
-After deployment to Netlify, you will have a static website where:
+After deployment with Netlify, there is a static website where:
 - Changes are deployed automatically when pushed to GitHub
 - Multiple contributors can edit via GitHub
 - Fulltext search works out of the box
@@ -60,7 +62,8 @@ After deployment to Netlify, you will have a static website where:
 
 ## Local Development
 
-While Netlify handles production web deployment, you can preview changes locally:
+Netlify handles production web deployment.  
+To preview changes locally:  
 
 **Install node modules locally** - one-time only  
 ```shell
@@ -75,7 +78,7 @@ markpub build -i .. -o output --lunr --commits
 cd output && python -m http.server
 ```
 
-Visit http://localhost:8000 to preview your site before pushing changes.
+Visit http://localhost:8000 to preview the website before pushing changes.
 
 ### Configuration
 Edit `.markpub/markpub.yaml` to change:
