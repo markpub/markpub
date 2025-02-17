@@ -451,6 +451,18 @@ def init_site(directory):
                 target.write(source.read())
         else:
             shutil.copy(templates_dir / "gitignore-template.txt", init_dir / ".gitignore")
+        # copy GitHub pages workflow directory and update workflow file
+        if not Path(f"{init_dir}/.github/").exists():
+            shutil.copytree(templates_dir / "dot-github", init_dir / ".github")
+            workflow_fname = f"{init_dir}/.github/workflows/gh-pages.yml"
+            with open(workflow_fname, 'r') as file:
+                lines = file.readlines()
+            for i, line in enumerate(lines):
+                if 'REPOSITORYNAME' in line:
+                    lines[i] = line.replace('REPOSITORYNAME', Path(init_dir).stem)
+                    break
+            with open(workflow_fname, 'w') as file:
+                file.writelines(lines)
         # copy this-website-themes directory
         shutil.copytree(templates_dir / "this-website-themes", init_dir / ".markpub" / "this-website-themes")
         # copy pip req'ts, javascript, and node info
