@@ -295,3 +295,47 @@ Common issues and solutions:
 - [MarkPub GitHub Repository](https://github.com/MarkPub/markpub)
 - [Bug Reports](https://github.com/MarkPub/markpub/issues)
 - [License: MIT](LICENSE)
+
+-----
+## Extra documentation snippets
+
+
+
+**Deploy to Netlify**:  
+REQUIREMENTS: GitHub account, and 
+**TODO**: Netlify specific wording of CI/CD connection  
+
+
+Netlify deployment steps are governed by the included `netlify.toml`   
+Netlify deployment:  
+- Installs all required dependencies  
+- Builds with full search functionality  
+- Enables Git commit tracking for the Recent Changes page  
+- Deploys to a public URL
+
+After deployment with Netlify, there is a static website where:
+- Changes are deployed automatically when pushed to GitHub
+- Multiple contributors can edit via GitHub
+- Fulltext search works out of the box
+- Recent changes are tracked automatically
+
+## Local Development
+
+Netlify handles production web deployment.  
+To preview changes locally:  
+
+**Install node modules locally** - one-time only  
+```shell
+cd /full/path/to/myDocumentCollection/.markpub
+npm ci
+```
+
+To deploy the current document collection locally:  
+```shell
+cd /full/path/to/myDocumentCollection/.markpub
+markpub build -i .. -o output --lunr --commits
+cd output && python -m http.server
+```
+
+Visit http://localhost:8000 to preview the website before pushing changes.
+

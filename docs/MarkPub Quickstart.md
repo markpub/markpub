@@ -3,43 +3,39 @@
 ## Assumptions and pre-requisites:
 
 These instructions assume the following:
-- The primary goal is to build a website from a collection of Markdown files.
+- The primary goal is to build a static website from a collection of Markdown files.
 - The Markdown documents are in a GitHub repository.
-- Web publishing is hosted by Netlify or GitHub pages.
+- Web publishing is hosted  by GitHub pages (or Netlify).
 
 ### Prerequisites for deployment:  
 - Python3 (Version 3.9 or higher) installed.  
-- Facility with using a command-line terminal app.  
-
-- Know how to deploy on Netlify from GitHub, or   
+- Facility with using a command-line or Terminal app.  
+- Know how to use a GitHub repository, and
 - Know how to deploy GitHub Pages, or  
+- Know how to deploy on Netlify, or   
 - Know how to get assistance with such deployments.  
 
 ## Basic installation and use  
 
-First, install MarkPub.  
-```shell
-pip install markpub
-```
-
-Assuming the local folder, and GitHub repository, name of the Markdown collection is “myDocumentCollection” these commands will initialize and deploy those documents to a Netlify hosted website.
+Assuming the local folder name, and the GitHub repository name of the Markdown collection is “myDocumentCollection” these commands initialize and deploy those documents to a GitHub Pages hosted website.
 
 **Initialize the document collection**:  
 
 ```shell
-# Initialize the site
+cd
+# First, install MarkPub
+pip install markpub
+# Initialize the folder
 markpub init /full/path/to/myDocumentCollection
 ```
 
-Initialization will prompt for:  
+MarkPub initialization prompts for:  
 
 - Website title: "My Document Collection”
 - Author: “Your name or names”
-- Git repo: github.com/YourGitHubAccountName/myDocumentCollection
+- Git repo: github.com/YourGitHubAccountName/myDocumentCollection  
 
-**Deploy to Netlify**:  
-REQUIREMENTS: GitHub account, and 
-**TODO**: Netlify specific wording of CI/CD connection  
+**Build and deploy collection to a GitHub Pages website**:  
 
 ```shell
 cd /full/path/to/myDocumentCollection
@@ -47,44 +43,22 @@ git commit -am "MarkPub installation updates"
 git push
 ```
 
-Netlify deployment steps are governed by the included `netlify.toml`   
-Netlify deployment:  
-- Installs all required dependencies  
-- Builds with full search functionality  
-- Enables Git commit tracking for the Recent Changes page  
-- Deploys to a public URL
-
-After deployment with Netlify, there is a static website where:
-- Changes are deployed automatically when pushed to GitHub
-- Multiple contributors can edit via GitHub
-- Fulltext search works out of the box
-- Recent changes are tracked automatically
-
-## Local Development
-
-Netlify handles production web deployment.  
-To preview changes locally:  
-
-**Install node modules locally** - one-time only  
-```shell
-cd /full/path/to/myDocumentCollection/.markpub
-npm ci
-```
-
-To deploy the current document collection locally:  
-```shell
-cd /full/path/to/myDocumentCollection/.markpub
-markpub build -i .. -o output --lunr --commits
-cd output && python -m http.server
-```
-
-Visit http://localhost:8000 to preview the website before pushing changes.
-
-### Configuration
+Log into GitHub, and for this repository's "Pages" settings, set "Build and deployment" "Branch" to "gh-pages" in the drop-down menu, and  select Save"   
+ - Saving that setting triggers a "pages build and deployment" workflow under the "Actions" tab  
+ - Select the repository’s "Actions" tab;  
+ - when the "pages build and deployment" workflow is finished (shows a green checkmark) select that workflow;
+ - from the "pages-build-deployment" graph select the green checkmark
+          "deploy" link to see the deployed website.
+ - when completed the website is available at:  
+  <https://YourGitHubAccountName.github.io/myDocumentCollection>  
+  
+  
+### Configuration  
 Edit `.markpub/markpub.yaml` to change:
 - Site title
-- Author
+- Author names
 - License
 - Number of recent changes shown
 - Other site-wide settings
+
 
