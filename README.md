@@ -1,6 +1,4 @@
-# markpub PyPI package
-
-[![PyPI][pypi-badge]][pypi]
+# markpub PyPI package  
 
 ## Overview
 
