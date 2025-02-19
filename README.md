@@ -1,4 +1,4 @@
-# markpub PyPI package  
+# markpub  
 
 ![PyPI version](https://img.shields.io/pypi/v/markpub)  
 
@@ -10,7 +10,7 @@ search.
 
 ## Requirements
 
-- Python 3.8 or higher.
+- Python 3.12 or higher.
 
 ## Install
 
