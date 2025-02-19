@@ -1,5 +1,7 @@
 # markpub PyPI package
 
+[![PyPI][pypi-badge]][pypi]
+
 ## Overview
 
 The `markpub` PyPI package builds a static website from a directory of Markdown files.  
