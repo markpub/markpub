@@ -234,9 +234,7 @@ def build_site(args):
                 Path(f"{dir_wiki}/README.md").write_text("\n".join(lines) + "\n")
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
-        # 'include_hidden=False' requires Python 3.11 - TODO: use `include_hidden=False` when we have 3.11 support
-        #allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False)]        
-        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*", recursive=True) if os.path.isfile(f)]
+        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False)]
         if 'excluded_directories' in config:
             allfiles = [f for f in allfiles if not any(ex_dir in f for ex_dir in config['excluded_directories'])]
 
