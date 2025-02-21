@@ -24,7 +24,9 @@ procedure with the following steps:
    ```  
  - Add the following YAML to the top of the MarkPub Markdown file:
 ```
----                                                                                                                          bluesky_comments_post: https://bsky.app/profile/anderbill.bsky.social/post/3ld2wfagagp2n                                     ---
+---
+bluesky_comments_post: https://bsky.app/profile/anderbill.bsky.social/post/3ld2wfagagp2n
+---
 ```  
  - Commit and push the updated Markdown page to the Git
    repository. The website is rebuilt and Bluesky comments to that
