@@ -491,12 +491,13 @@ def init_site(directory):
         config_doc['author'] = author_name
         # 2024-11-07: edit_url supports GitHub and GitLab only
         if git_repo:
-            if urlparse(git_repo).netloc == 'github.com':
-                config_doc['edit_url'] = f"{git_repo}/edit/"
-            elif urlparse(git_repo).netloc == 'gitlab.com':
-                config_doc['edit_url'] = f"{git_repo}/-/edit/"
-            else:
-                config_doc['edit_url'] = ''
+            match urlparse(git_repo).netloc:
+                case 'github.com':
+                    config_doc['edit_url'] = f"{git_repo}/edit/"
+                case 'gitlab.com':
+                    config_doc['edit_url'] = f"{git_repo}/-/edit/"
+                case _:
+                    config_doc['edit_url'] = ''
             config_doc['repo'] = f'<a href="{git_repo}">{git_repo.split("/")[-1]}</a>'
         else:
             config_doc['edit_url'] = ''
@@ -530,19 +531,20 @@ def main():
     args = parser.parse_known_args()
     logger.info(args)
 
-    if args[0].cmd == 'init':
-        logger.info('Initializing in directory: %s', {args[0].directory[0]})
-        init_site(args[0].directory[0])
-    elif args[0].cmd == 'build':
-        # do not build if input directory is not initialized
-        if not os.path.isfile(f"{args[0].input}/.markpub/markpub.yaml"):
-            logger.warning("Have you run `markpub init` yet?")
-            logger.error(f"{args[0].input} does not appear to initialized. Run `markpub init -h` for instructions.")
+    match args[0].cmd:
+        case 'init':
+            logger.info('Initializing in directory: %s', {args[0].directory[0]})
+            init_site(args[0].directory[0])
+        case 'build':
+            # do not build if input directory is not initialized
+            if not os.path.isfile(f"{args[0].input}/.markpub/markpub.yaml"):
+                logger.warning("Have you run `markpub init` yet?")
+                logger.error(f"{args[0].input} does not appear to initialized. Run `markpub init -h` for instructions.")
+                return
+            logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
+            build_site(args)
+        case _:
             return
-        logger.info(f'building website in directory {args[0].output} from Markdown files in {args[0].input}')
-        build_site(args)
-    else:
-        return
 
 if __name__ == '__main__':
     exit(main())
