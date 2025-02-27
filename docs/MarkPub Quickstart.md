@@ -36,7 +36,7 @@ MarkPub initialization prompts for:
 - Author: "Your name or names"
 - Git repo: github.com/YourGitHubAccountName/myDocumentCollection  
 
-**Build and deploy collection to a GitHub Pages website**:  
+**Web-publish the collection as a GitHub Pages website**:  
 
 ```shell
 cd /full/path/to/myDocumentCollection
