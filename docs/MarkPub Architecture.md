@@ -8,7 +8,7 @@ This file was generated automatically by Claude 3.7 Sonnet on 2025-02-25, based 
 
 ## Core Components
 
-MarkPub's architecture consists of these key components:
+MarkPub's architecture consists of these components:
 
 ### 1. Command-Line Interface
 
@@ -33,9 +33,10 @@ Configuration is managed through a YAML file (`.markpub/markpub.yaml`), which co
 
 MarkPub extends the Mistletoe Markdown parser with a custom renderer (`MassiveWikiRenderer`) that adds:
 - Wiki-style links (`[[Page Name]]`)
+- Transclusion (`![[Page Name]]`)
 - Image embedding (`![[image.png]]`)
 - Raw HTML support (`{< html >}`)
-- Link modification based on site structure
+- Link modification based on site structure (WLA note: what does this refer to, or mean?)
 
 #### Front Matter Parser
 
@@ -62,11 +63,11 @@ Templates have access to:
 
 ### 5. Link Management
 
-A sophisticated link management system:
+A link management system:
 - Maintains a `wiki_pagelinks` dictionary to track relationships between files
 - Converts wiki-style links to proper HTML hyperlinks
 - Builds a backlinks graph to show what pages link to the current page
-- Handles file path cleaning and URL normalization
+- Handles file path and URL normalization
 
 ### 6. Search Functionality
 
@@ -90,7 +91,7 @@ When enabled with `--commits`:
 - Maintains directory structure
 - Handles special files like README.md → index.html conversion
 
-## Data Flow
+## Data Flow (WLA note: this is a nice DFD, and also not accurate; does it matter?)
 
 ```
 ┌─────────────────┐     ┌──────────────────┐     ┌───────────────────┐
@@ -107,13 +108,13 @@ When enabled with `--commits`:
 
 ## Dependencies
 
-MarkPub relies on these key dependencies:
+MarkPub relies on these dependencies:
 - `mistletoe`: Markdown parsing
 - `Jinja2`: HTML templating
 - `PyYAML`: Configuration handling
-- `Node.js`/`lunr.js`: Search indexing (optional)
 - `python-dateutil`: Date handling
 - `Git`: Commit information (optional)
+- `Node.js`/`lunr.js`: Search indexing (optional)
 
 ## Performance Considerations
 
@@ -135,4 +136,4 @@ The architecture allows for:
 - Custom themes through the template system
 - Extended Markdown syntax via renderer customization
 - Additional metadata through front matter
-- Integration with external services through extension points
+- Integration with external services through extension points (WlA note: what does this refer to?)
