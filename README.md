@@ -18,7 +18,7 @@ MarkPub can  publish the HTML files to the web by installing instructions that G
 pip install markpub
 ```  
 
-## Usage
+## Use
 
 - Once installed use information is available using `--help` or `-h`
   options; e.g.:  
