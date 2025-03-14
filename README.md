@@ -6,7 +6,7 @@ MarkPub builds a static website from a directory of Markdown files.
 The website supports wiki-links, transclusion, and provides full-text
 search.  
 
-MarkPub can  publish the HTML files to the web by installing instructions that GitHub Pages and Netlify can run automatically.
+MarkPub installs instructions that GitHub Pages and Netlify can run automatically to publish the HTML files on the web.
 
 ## Requirements
 
