@@ -27,7 +27,9 @@ pip install markpub
 markpub --help|-h
 ```
 
-TODO: provide an example of initialization and build  
+## Documentation  
+
+- [Basic install instructions](/docs/MarkPub Basic Install)
 
 - Further documentation is under development.  
 
