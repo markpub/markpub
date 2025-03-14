@@ -2,19 +2,17 @@
 
 ![PyPI version](https://img.shields.io/pypi/v/markpub)  
 
-## Overview
-
-The `markpub` PyPI package builds a static website from a directory of Markdown files.  
+MarkPub builds a static website from a directory of Markdown files.  
 The website supports wiki-links, transclusion, and provides full-text
-search.
+search.  
+
+MarkPub can  publish the HTML files to the web by installing instructions that GitHub Pages and Netlify can run automatically.
 
 ## Requirements
 
 - Python 3.12 or higher.
 
 ## Install
-
-- This package can be installed using `pip`:  
 
 ``` shell
 pip install markpub
