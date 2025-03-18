@@ -189,7 +189,10 @@ def build_site(args):
             'backlinks': wiki_pagelinks.get(file.stem.lower(), {}).get('backlinks', [])
         }
         # determine edit URL
-        if file.stem != 'README' and file.name != config.get('sidebar', ''):
+        # Get the list of pages that should have no edit URL from config
+        no_edit_url_pages = config.get('no_edit_url_pages', [])
+            
+        if file.stem not in no_edit_url_pages and file.name not in no_edit_url_pages:
             if config.get('edit_url'):
                 context['edit_url'] = (
                     f"{config['edit_url']}{config['edit_branch']}"
@@ -197,7 +200,7 @@ def build_site(args):
                 )
                 context['git_forge'] = git_forge_proper_name(config['edit_url'])
         else:
-                # For README or sidebar, explicitly set empty edit_url
+                # For pages in no_edit_url_pages list, explicitly set empty edit_url
                 context['edit_url'] = ''
         return context
 
@@ -326,17 +329,22 @@ def build_site(args):
                     except Exception as e:
                         logger.error(f"git log subprocess error: {e}")
 
-                # remember this page for All Pages
-                # strip Markdown headers and add truncated content (used for recent_pages)
-                stripped_text = re.sub(r'^#+.*\n?', '', markdown_text, flags=re.MULTILINE)
-                all_pages.append({
-                    'title':Path(file).stem,
-                    'path':Path(clean_filepath).with_suffix(".html").as_posix(),
-                    'date':date,
-                    'change':change,
-                    'author':author,
-                    'abstract':textwrap.shorten(stripped_text, width=257),
-                })
+                # remember this page for All Pages unless it's in no_edit_url_pages
+                # Get the list of pages that should be excluded from all_pages from config
+                no_edit_url_pages = config.get('no_edit_url_pages', [])
+                
+                # Only add to all_pages if not in no_edit_url_pages
+                if Path(file).stem not in no_edit_url_pages and Path(file).name not in no_edit_url_pages:
+                    # strip Markdown headers and add truncated content (used for recent_pages)
+                    stripped_text = re.sub(r'^#+.*\n?', '', markdown_text, flags=re.MULTILINE)
+                    all_pages.append({
+                        'title':Path(file).stem,
+                        'path':Path(clean_filepath).with_suffix(".html").as_posix(),
+                        'date':date,
+                        'change':change,
+                        'author':author,
+                        'abstract':textwrap.shorten(stripped_text, width=257),
+                    })
             # create build results
             with open(Path(dir_output) / 'build-results.json', 'w') as outfile:
                 build_results = {

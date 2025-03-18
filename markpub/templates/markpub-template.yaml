@@ -21,3 +21,6 @@ recent_changes_count: 5
 
 # the markdown page which will be handled as a sidebar page
 sidebar: Sidebar.md
+
+# list of pages that should not have an edit URL and should be excluded from all-pages.html
+no_edit_url_pages: ['README', 'Sidebar.md']
