@@ -29,7 +29,7 @@ markpub --help|-h
 
 ## Documentation  
 
-- [Basic install instructions](/docs/MarkPub Basic Install)
+- [Basic install instructions](/docs/MarkPub-Basic-Install.md)
 
 - Further documentation is under development.  
 
