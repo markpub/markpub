@@ -25,8 +25,8 @@
 	<input type="text" placeholder="type search words" id="inputID">
 	<button type="button" onclick="doSearch();" id="searchButton">Search</button>
         {% else %}
-	<p>Lunr search index is not present. It must be enabled by passing the <code>--lunr</code> flag to <code>markpub.py</code>.</p>
-	<p>Check the Massive Wiki Builder documentation for more details.</p>
+	<p>Lunr search index is not present. It is enabled by passing the <code>--lunr</code> flag to <code>markpub</code>.</p>
+	<p>Check the MarkPub documentation for more details.</p>
         {% endif %}
 	<div id="renderList"></div>
       </div>
