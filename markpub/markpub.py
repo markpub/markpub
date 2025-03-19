@@ -235,8 +235,10 @@ def build_site(args):
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
         allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False)]
-        if 'excluded_directories' in config:
-            allfiles = [f for f in allfiles if not any(ex_dir in f for ex_dir in config['excluded_directories'])]
+        # exclude no_edit_url_pages and excluded_directories
+        allfiles = [f for f in allfiles if not (any(no_edit in f for no_edit in (config.get('no_edit_url_pages') or [])) or
+                    any(ex_dir in f for ex_dir in (config.get('excluded_directories') or [])) or
+                    (config.get('sidebar') is not None and f.endswith(config.get('sidebar'))))]
 
         # read wiki content and build wikilinks dictionary; lunr index lists
         lunr_idx_data=[]

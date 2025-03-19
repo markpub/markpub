@@ -1,7 +1,7 @@
 # the title of your wiki
 wiki_title: Developer Wiki (Massive Wiki)
 
-# the author of your wiki
+# the author(s) of your wiki
 author: the Massive Wiki Team
 
 # URL of the centralized Git repo, with trailing slash, used for Edit This Page
@@ -19,5 +19,11 @@ license: '<a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons
 # number of pages to list in Recent Changes
 recent_changes_count: 5
 
-# the markdown page which will be handled as a sidebar page
+# the markdown page to be handled as a sidebar page
 sidebar: Sidebar.md
+
+# pages that will not have "Edit" buttons
+no_edit_url_pages:
+
+# directories to exclude from the static web site
+excluded_directories:
