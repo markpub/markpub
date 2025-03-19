@@ -1,36 +1,40 @@
-# MarkPub Quickstart
+# MarkPub Quickstart  
+
+MarkPub generates HTML files from Markdown files. (It is a static site generator.)
+
+MarkPub can help publish the HTML files to the web by installing instructions that GitHub and Netlify can run automatically.
 
 ## Assumptions and pre-requisites:
 
 These instructions assume the following:
-- The primary goal is to build a static website from a collection of Markdown files.
-- The Markdown documents are in a GitHub repository.
-- Web publishing is hosted by GitHub pages (or Netlify).
+- The primary goal is to build a static website from a collection of Markdown files. 
+- The Markdown documents are in an existing GitHub repository.  
+- Web publishing is hosted by GitHub Pages (or Netlify, see below).
 
-### Prerequisites for deployment:  
-- Python3 (Version 3.9 or higher) installed.  
+### Prerequisites for installation:  
+- Python3 (Version 3.12 or higher) installed.  
 - Facility with using a command-line or Terminal app.  
-- Know how to use a GitHub repository.
+- Know how to use a GitHub repository, and
 - Know how to deploy GitHub Pages, or  
-- Know how to deploy on Netlify, or   
-- Know how to get assistance with such deployments.  
+- Can get help with using GitHub and GitHub Pages from someone or some place.  
 
 ## Basic installation and use  
 
-Assuming the local folder name, and the GitHub repository name of the Markdown collection is "myDocumentCollection" these commands initialize and deploy those documents to a GitHub Pages hosted website.
+Assuming the local folder name, and the GitHub repository name of the Markdown collection is "myDocumentCollection" these commands initialize and web-publish those documents to a GitHub Pages hosted website.
 
 **Install MarkPub**:
 ```shell
-cd
+cd # to home directory or some work directory
 pip install markpub
 ```
 
 **Initialize the document collection**:
+note: prior to initialization, the `myDocumentCollection` folder must be a local copy (“clone”) of an existing GitHub repository.
 ```shell
 markpub init /full/path/to/myDocumentCollection
 ```
 
-MarkPub initialization prompts for:  
+MarkPub initialization issues terminal prompts for:  
 
 - Website title: "My Document Collection"
 - Author: "Your name or names"
@@ -53,7 +57,7 @@ Log into GitHub, and for this repository's "Pages" settings, set "Build and depl
  - when completed the website is available at:  
   <https://YourGitHubAccountName.github.io/myDocumentCollection>  
   
-For Netlify deployment, MarkPub provides a `netlify.toml` configuration file automatically during initialization. You can use this to deploy your site on Netlify instead of GitHub Pages.
+**Web-publish using Netlify**: For Netlify deployment, MarkPub installs a `netlify.toml` configuration file during initialization. You can use this to web-publish your site using [Netlify](https://netlify.app), instead of GitHub Pages.
   
 ### Configuration  
 Edit `.markpub/markpub.yaml` to change:
