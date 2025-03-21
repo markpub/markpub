@@ -29,7 +29,8 @@ markpub --help|-h
 
 ## Documentation  
 
-- [Basic install instructions](https://markpub.org/documentation/markpub_basic_install)
+- [Basic install instructions](https://markpub.org/documentation/markpub_basic_install)  
+- [Install and Web-publish instructions](https://markpub.org/documentation/markpub_install_and_web-publish_steps)  
 
 - Further documentation is under development.  
 
