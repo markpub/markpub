@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "markpub"
-version = "0.5.5"
+version = "1.0.0"
 description = "Build (web publish) Markdown and Massive Wiki sites."
 license = "MIT"
 authors = [
@@ -13,7 +13,7 @@ authors = [
 ]
 readme = "README.md"
 homepage = "https://github.com/MarkPub/markpub"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4.0"
 
 packages = [
     { include = "markpub" },
@@ -31,6 +31,3 @@ dependencies = [
 
 [project.scripts]
 markpub = "markpub.markpub:main"
-    
-[tool.poetry.dependencies]
-python = "^3.12"
