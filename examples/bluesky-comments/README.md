@@ -5,7 +5,7 @@ Embed Bluesky comments on a MarkPub generated website.
 MarkPub supports Bluesky comments on MarkPub pages referenced in
 Bluesky posts.
 
-[markpub_bskypost](https://test.pypi.org/project/markpub_bskypost/) is a Python package that implements  
+[markpub_bskypost](https://pypi.org/project/markpub_bskypost) implements  
 
 1. posting a MarkPub webpage URL as part of a Bluesky post, and  
 
