@@ -1,4 +1,6 @@
-# MassiveWikiBuilder Tests
+# Markpub Tests
+
+TODO: Clean up tests/ data `.massivewikibuilder` references
 
 test_mwb.py is a `pytest` script that is used to test mwb.py.
 
