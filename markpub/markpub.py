@@ -234,7 +234,7 @@ def build_site(args):
                 Path(f"{dir_wiki}/README.md").write_text("\n".join(lines) + "\n")
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
-        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False)]
+        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False) if os.path.isfile(f)]
         # exclude no_edit_url_pages and excluded_directories
         allfiles = [f for f in allfiles if not (any(no_edit in f for no_edit in (config.get('no_edit_url_pages') or [])) or
                     any(ex_dir in f for ex_dir in (config.get('excluded_directories') or [])) or
