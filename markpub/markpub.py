@@ -295,7 +295,7 @@ def build_site(args):
         for file in allfiles:
             clean_filepath = scrub_path(rootdir+Path(file).relative_to(dir_wiki).as_posix())
             # make needed subdirectories
-            (Path(dir_output) / clean_filepath).parent.mkdir(parents=True, exist_ok=True)
+            (Path(dir_output+clean_filepath).parent.mkdir(parents=True, exist_ok=True)
             if Path(file).suffix == '.md':
                 logger.info("Rendering %s", file)
                 # parse Markdown file
