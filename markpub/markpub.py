@@ -220,7 +220,7 @@ def build_site(args):
         # remove existing output directory and recreate
         logger.debug("remove existing output directory and recreate")
         shutil.rmtree(dir_output, ignore_errors=True)
-        os.mkdir(dir_output)
+        Path(dir_output).mkdir()
 
         # insure that a README.md file exists at wiki root directory; create if needed
         #   FIRST rename any existing index.html file
@@ -234,7 +234,7 @@ def build_site(args):
                 Path(f"{dir_wiki}/README.md").write_text("\n".join(lines) + "\n")
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
-        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False) if os.path.isfile(f)]
+        allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False) if Path(f).is_file()]
         # exclude no_edit_url_pages and excluded_directories
         allfiles = [f for f in allfiles if not (any(no_edit in f for no_edit in (config.get('no_edit_url_pages') or [])) or
                     any(ex_dir in f for ex_dir in (config.get('excluded_directories') or [])) or
@@ -295,7 +295,7 @@ def build_site(args):
         for file in allfiles:
             clean_filepath = scrub_path(rootdir+Path(file).relative_to(dir_wiki).as_posix())
             # make needed subdirectories
-            os.makedirs(Path(dir_output+clean_filepath).parent, exist_ok=True)
+            (Path(dir_output) / clean_filepath).parent.mkdir(parents=True, exist_ok=True)
             if Path(file).suffix == '.md':
                 logger.info("Rendering %s", file)
                 # parse Markdown file
@@ -369,12 +369,12 @@ def build_site(args):
 
         # copy README.html to index.html if no index.html
         logger.debug("copy README.html to index.html if no index.html")
-        if not os.path.exists(Path(dir_output) / 'index.html'):
+        if not (Path(dir_output) / 'index.html').exists():
             shutil.copyfile(Path(dir_output) / 'README.html', Path(dir_output) / 'index.html')
 
         # copy static assets directory
         logger.debug("copy static assets directory")
-        if os.path.exists(Path(dir_templates) / 'static'):
+        if (Path(dir_templates) / 'static').exists():
             shutil.copytree(Path(dir_templates) / 'static', Path(dir_output), dirs_exist_ok=True)
 
         # build all-pages.html
@@ -428,7 +428,7 @@ def init_site(directory):
     else:
         # create and initialize directory
         logger.info(f"Creating directory {init_dir}")
-        os.makedirs(init_dir)
+        Path(init_dir).mkdir(parents=True, exist_ok=True)
         
     # Define the source template directory
     script_dir = Path(__file__).parent
@@ -436,7 +436,7 @@ def init_site(directory):
     # Copy files from templates
     try:
         # copy netlify.toml to the root of the new directory; save any existing file
-        if os.path.exists(filename := f"{init_dir}/netlify.toml"):
+        if (filename := Path(init_dir) / "netlify.toml").exists():
             shutil.copy(filename, init_dir / "netlify-prior.toml")
         shutil.copy(templates_dir / "netlify.toml", init_dir / "netlify.toml")
         # copy Sidebar.md; do not overwrite an existing [S|s]idebar.md file
@@ -539,7 +539,7 @@ def main():
             init_site(args[0].directory[0])
         case 'build':
             # do not build if input directory is not initialized
-            if not os.path.isfile(f"{args[0].input}/.markpub/markpub.yaml"):
+            if not (Path(args[0].input) / ".markpub" / "markpub.yaml").is_file():
                 logger.warning("Have you run `markpub init` yet?")
                 logger.error(f"{args[0].input} does not appear to initialized. Run `markpub init -h` for instructions.")
                 return
