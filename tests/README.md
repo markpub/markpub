@@ -1,18 +1,17 @@
 # Markpub Tests
 
-TODO: Clean up tests/ data `.massivewikibuilder` references
-
-test_markpub.py is a `pytest` script that is used to test markpub.py.
+test_markpub.py is a `pytest` script that is used to test the Python package Markpub  
 
 The test script compares the known baseline files with the generated output files, and generates warning messages about anything that doesn't match.
 
-In the Massive Wiki Builder repository:  
+In the Markpub repository:  
+
  -  `test_markpub.py` is called like this:
 ```shell
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install -r ../../requirements.txt
+pip install markpub
 pytest tests
 ```
 
@@ -22,18 +21,18 @@ cd tests/
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install -r ../requirements.txt
-markpub. -c test-input/.markpub//markpub.yaml -w test-input -o baseline
+pip install markpub
+markpub -c test-input/.markpub//markpub.yaml -w test-input -o baseline
 ```
 
-When Markpub is installed in a wiki, test_markpub.py is called like this:
+When Markpub is installed test_markpub.py is called like this:
 
 ```shell
 cd YOURWIKIDIR/.markpub
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install markpub
 pytest tests
 ```
 
@@ -43,16 +42,19 @@ A successful test output on a macOS system looks like this:
 
 ```shell
 ========================================= test session starts =========================================
-platform darwin -- Python 3.12.2, pytest-8.1.1, pluggy-1.4.0
+platform darwin -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0
+rootdir: /Users/band/Public/pkgs/markpub/markpub
 rootdir: /LOCAL/FULL/PATH/TO/massivewikibuilder
-collected 1 item                                                                                      
+configfile: pyproject.toml
+collected 1 item
 
-tests/test_markpub.py .                                                                             [100%]
+tests/test_markpub.py .                                                                          [100%]
 
-========================================== 1 passed in 0.31s ==========================================
+========================================== 1 passed in 0.06s ==========================================
 ```
 where `/LOCAL/FULL/PATH/TO/` is the full path to the Markpub repository on your system.  
 
 ## Scope and Limitations
 
 The current test suite does not build or check the Lunr search files.
+
