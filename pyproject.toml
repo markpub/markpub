@@ -34,3 +34,12 @@ repository = "https://github.com/MarkPub/markpub"
 
 [project.scripts]
 markpub = "markpub.markpub:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[project.optional-dependencies]
+test = ["pytest>=6.0"]
