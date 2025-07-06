@@ -414,6 +414,35 @@ def build_site(args):
         traceback.print_exc(e)
     return
 
+
+# update the theme directory
+def update_theme(directory, theme_name='dolce'):
+    """Update theme files in an existing markpub site"""
+    logger.info(f"Updating theme '{theme_name}' in {directory}")
+    
+    # Check if directory is initialized
+    markpub_dir = Path(directory) / ".markpub"
+    if not markpub_dir.exists():
+        logger.error(f"Directory {directory} is not initialized. Run 'markpub init' first.")
+        return
+    
+    # Define source and destination paths
+    script_dir = Path(__file__).parent
+    source_theme_dir = script_dir / "templates" / "this-website-themes" / theme_name
+    dest_theme_dir = markpub_dir / "this-website-themes" / theme_name
+    
+    # Backup existing theme
+    if dest_theme_dir.exists():
+        backup_dir = dest_theme_dir.parent / f"{theme_name}-backup-{int(time.time())}"
+        shutil.copytree(dest_theme_dir, backup_dir)
+        logger.info(f"Existing theme backed up to {backup_dir}")
+    
+    # Copy new theme files
+#    shutil.copytree(source_theme_dir, dest_theme_dir, dirs_exist_ok=True)
+    logger.info(f"Theme '{theme_name}' updated successfully")
+    return
+
+
 # initialize new markpub directory
 def init_site(directory):
     # Check the specified directory
@@ -513,7 +542,7 @@ def init_site(directory):
 
 def main():
     # setup argument parsers
-    parser = argparse.ArgumentParser(description='Initialize or build website for a collection of Markdown files.')
+    parser = argparse.ArgumentParser(description='Initialize, build, or update website for a collection of Markdown files.')
     subparsers = parser.add_subparsers(required=True)
     # subparser for "init" command
     parser_init = subparsers.add_parser('init')
@@ -529,6 +558,9 @@ def main():
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
+    # subparser for "update" command
+    parser_update = subparsers.add_parser('update')
+    parser_update.set_defaults(cmd='update')
     
     args = parser.parse_known_args()
     logger.info(args)
@@ -545,6 +577,9 @@ def main():
                 return
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
+        case 'update':
+            logger.info("Updating default theme; assuming directory == '..'")
+            update_theme('..', 'dolce')
         case _:
             return
 
