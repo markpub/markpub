@@ -131,9 +131,9 @@ def build_site(args):
     input_dir = args[0].input
     output_dir = args[0].output
     logger.info(f"build website in {output_dir} from Markdown files in {input_dir}")
-    config_file = Path(args[0].config).absolute().as_posix()
+    config_file = Path(args[0].config).resolve().as_posix()
     logger.info(f"using config file: {config_file}")
-    templates_dir = Path(args[0].templates).absolute().as_posix()
+    templates_dir = Path(args[0].templates).resolve().as_posix()
     logger.info(f"using website theme templates: {templates_dir}")
     
     logger.info("args: %s", args)
@@ -447,7 +447,7 @@ def update_theme(directory, theme_name='dolce'):
 def init_site(directory):
     # Check the specified directory
     logger.debug(f"init directory: {directory}")
-    init_dir = Path(directory)
+    init_dir = Path(directory).resolve()
     logger.debug(f"init_dir: {init_dir}")
     if init_dir.exists():
         # if any(init_dir.iterdir()):
@@ -508,7 +508,7 @@ def init_site(directory):
     # get configuration input
     website_title = input("Enter the website title: ")
     if not website_title: # if no title entered use init directory name
-        website_title = Path(init_dir).absolute().name
+        website_title = Path(init_dir).resolve().name
     logger.debug(f"website title: {website_title}")
     author_name = input("Enter the author name(s): ")
     git_repo = input("Enter Git repository url (for Edit button; optional): ")
