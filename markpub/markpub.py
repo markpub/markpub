@@ -128,31 +128,27 @@ def datetime_date_serializer(o):
 # build website
 def build_site(args):
     logger.debug("Building ....")
-    input_dir = args[0].input
-    output_dir = args[0].output
-    logger.info(f"build website in {output_dir} from Markdown files in {input_dir}")
+    logger.info("args: %s", args)
+    logger.info(f"build website in {args[0].output} from Markdown files in { args[0].input}")
+
+    # read configuration file
     config_file = Path(args[0].config).resolve().as_posix()
     logger.info(f"using config file: {config_file}")
-    templates_dir = Path(args[0].templates).resolve().as_posix()
-    logger.info(f"using website theme templates: {templates_dir}")
-    
-    logger.info("args: %s", args)
-
-    # get configuration
     config = load_config(Path(config_file).resolve().as_posix())
+    theme_dir = Path(args[0].templates).resolve().as_posix()
+    logger.info(f"using website theme templates: {theme_dir}")
+
     if 'recent_changes_count' not in config:
         config['recent_changes_count'] = 5
 
     # remember paths
     dir_output = Path(args[0].output).resolve().as_posix()
-    dir_templates = Path(templates_dir).resolve().as_posix()
-    logger.info(f"dir_templates :{dir_templates}")
     dir_wiki = Path(args[0].input).resolve().as_posix()
     rootdir = '/'
     websiteroot = args[0].root
 
     # get a Jinja2 environment
-    j = jinja2_environment(dir_templates)
+    j = jinja2_environment(theme_dir)
 
     # render html pages from jinja2 templates
     def render_template(template_name, **kwargs):
@@ -374,8 +370,8 @@ def build_site(args):
 
         # copy static assets directory
         logger.debug("copy static assets directory")
-        if os.path.exists(Path(dir_templates) / 'static'):
-            shutil.copytree(Path(dir_templates) / 'static', Path(dir_output), dirs_exist_ok=True)
+        if os.path.exists(Path(theme_dir) / 'static'):
+            shutil.copytree(Path(theme_dir) / 'static', Path(dir_output), dirs_exist_ok=True)
 
         # build all-pages.html
         logger.debug("build all-pages.html")
