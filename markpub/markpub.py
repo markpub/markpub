@@ -135,7 +135,7 @@ def build_site(args):
     config_file = Path(args[0].config).resolve().as_posix()
     logger.info(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
-    theme_dir = Path(args[0].templates).resolve().as_posix()
+    theme_dir = Path(args[0].theme).resolve().as_posix()
     logger.info(f"using website theme templates: {theme_dir}")
 
     if 'recent_changes_count' not in config:
@@ -488,8 +488,8 @@ def init_site(directory):
                     break
             with open(workflow_fname, 'w') as file:
                 file.writelines(lines)
-        # copy this-website-themes directory
-        shutil.copytree(templates_dir / "this-website-themes", init_dir / ".markpub" / "this-website-themes")
+        # copy website themes directory
+        shutil.copytree(templates_dir / "themes", init_dir / ".markpub" / "themes")
         # copy pip req'ts, javascript, and node info
         shutil.copy(templates_dir / "requirements.txt", init_dir / ".markpub" / "requirements.txt")
         shutil.copy(templates_dir / "build-index.js", init_dir / ".markpub" / "build-index.js")
@@ -549,7 +549,7 @@ def main():
     parser_build.add_argument('-i', '--input', required=True, help='input directory of Markdown files')
     parser_build.add_argument('-o', '--output', required=True, help='output website directory')
     parser_build.add_argument('--config', '-c', default='./markpub.yaml', help='path to YAML config file')
-    parser_build.add_argument('--templates', '-t', default='./this-website-themes/dolce', help='directory for HTML templates')    
+    parser_build.add_argument('--theme', '-t', default='./themes/dolce', help='directory for HTML templates')
     parser_build.add_argument('--root', '-r', default='', help='name for website root directory (to host GitHub Pages)')
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
