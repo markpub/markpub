@@ -32,9 +32,10 @@ import traceback
 from urllib.parse import urlparse
 import yaml
 
-# pip install - mistletoe based Markdown to HTML conversion
+# Markpub libraries and modules - mistletoe based Markdown to HTML conversion
 from mistletoe import Document
 from markpub.mistletoe_renderer.massivewiki import MassiveWikiRenderer
+import markpub_themes
 
 # wiki page links, backlinks table
 wiki_pagelinks = {}
@@ -411,31 +412,37 @@ def build_site(args):
     return
 
 
-# update the theme directory
-def update_theme(directory, theme_name='dolce'):
-    """Update theme files in an existing markpub site"""
-    logger.info(f"Updating theme '{theme_name}' in {directory}")
+# install a default theme for custom use
+def clone_theme(directory, theme_name='dolce'):
+    """Install default theme files into an existing markpub site"""
+    logger.info(f"Installing theme '{theme_name}' into {directory}")
     
     # Check if directory is initialized
-    markpub_dir = Path(directory) / ".markpub"
+    markpub_dir = Path(directory).resolve() / ".markpub"
     if not markpub_dir.exists():
         logger.error(f"Directory {directory} is not initialized. Run 'markpub init' first.")
         return
     
-    # Define source and destination paths
-    script_dir = Path(__file__).parent
-    source_theme_dir = script_dir / "templates" / "this-website-themes" / theme_name
-    dest_theme_dir = markpub_dir / "this-website-themes" / theme_name
-    
+    # Define source and destination path
+    # TODO: 2025-07-13 review use of Paths
+    source_theme_dir = markpub_themes.get_theme_path('dolce')
+    logging.debug(f"source_theme_dir: {source_theme_dir}")
+    dest_theme_dir = f"{markpub_dir}/themes/{theme_name}"
+    dest_theme_path = Path(f"{markpub_dir}/themes/{theme_name}")
+
     # Backup existing theme
-    if dest_theme_dir.exists():
-        backup_dir = dest_theme_dir.parent / f"{theme_name}-backup-{int(time.time())}"
+    if dest_theme_path.exists():
+        backup_dir = dest_theme_path.parent / f"{theme_name}-backup-{int(time.time())}"
         shutil.copytree(dest_theme_dir, backup_dir)
         logger.info(f"Existing theme backed up to {backup_dir}")
     
-    # Copy new theme files
-#    shutil.copytree(source_theme_dir, dest_theme_dir, dirs_exist_ok=True)
-    logger.info(f"Theme '{theme_name}' updated successfully")
+    # Copy the theme files
+    shutil.copytree(
+        source_theme_dir,
+        dest_theme_dir,
+        ignore=shutil.ignore_patterns('__pycache__','__init__.py'),
+        dirs_exist_ok=True)
+    logger.info(f"Theme '{theme_name}' local install successful.")
     return
 
 
@@ -538,7 +545,7 @@ def init_site(directory):
 
 def main():
     # setup argument parsers
-    parser = argparse.ArgumentParser(description='Initialize, build, or update website for a collection of Markdown files.')
+    parser = argparse.ArgumentParser(description='Initialize, build, or clone theme for, a website of a collection of Markdown files.')
     subparsers = parser.add_subparsers(required=True)
     # subparser for "init" command
     parser_init = subparsers.add_parser('init')
@@ -554,9 +561,10 @@ def main():
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
-    # subparser for "update" command
-    parser_update = subparsers.add_parser('update')
-    parser_update.set_defaults(cmd='update')
+    # subparser for "clonetheme" command
+    parser_clonetheme = subparsers.add_parser('clonetheme')
+    parser_clonetheme.add_argument('directory', nargs=1)
+    parser_clonetheme.set_defaults(cmd='clonetheme')
     
     args = parser.parse_known_args()
     logger.info(args)
@@ -573,9 +581,9 @@ def main():
                 return
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
-        case 'update':
-            logger.info("Updating default theme; assuming directory == '..'")
-            update_theme('..', 'dolce')
+        case 'clonetheme':
+            logger.info(f"Installing local copy of the default theme in directory: {args[0].directory[0]}")
+            clone_theme(args[0].directory[0], 'dolce')
         case _:
             return
 
