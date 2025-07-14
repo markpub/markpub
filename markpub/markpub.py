@@ -496,7 +496,8 @@ def init_site(directory):
             with open(workflow_fname, 'w') as file:
                 file.writelines(lines)
         # copy website themes directory
-        shutil.copytree(templates_dir / "themes", init_dir / ".markpub" / "themes")
+        default_theme_dir = markpub_themes.get_theme_path('dolce')
+        shutil.copytree(default_theme_dir, init_dir / ".markpub/themes/dolce")
         # copy pip req'ts, javascript, and node info
         shutil.copy(templates_dir / "requirements.txt", init_dir / ".markpub" / "requirements.txt")
         shutil.copy(templates_dir / "build-index.js", init_dir / ".markpub" / "build-index.js")
