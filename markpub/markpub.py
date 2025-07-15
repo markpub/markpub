@@ -136,7 +136,11 @@ def build_site(args):
     config_file = Path(args[0].config).resolve().as_posix()
     logger.info(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
-    theme_dir = Path(args[0].theme).resolve().as_posix()
+    # set theme directory
+#    theme_dir = Path(args[0].theme).resolve().as_posix()
+    theme_dir = markpub_themes.get_theme_path('dolce')
+    if theme_name := config.get('theme'):
+        theme_dir = f"{init_dir}/.markpub/themes/{theme_name}"
     logger.info(f"using website theme templates: {theme_dir}")
 
     if 'recent_changes_count' not in config:
