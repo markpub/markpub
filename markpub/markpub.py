@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-APPVERSION = 'v4.0.0-candidate'
+# synchronize version with pyproject.toml file
+from importlib.metadata import version
+__version__ = version("markpub")
+APPVERSION = version("markpub")
 APPNAME = 'MarkPub'
 
 # setup logging
@@ -130,18 +133,19 @@ def datetime_date_serializer(o):
 def build_site(args):
     logger.debug("Building ....")
     logger.info("args: %s", args)
-    logger.info(f"build website in {args[0].output} from Markdown files in { args[0].input}")
+    logger.info(f"build website in {args[0].output} from Markdown files in {args[0].input}")
 
     # read configuration file
     config_file = Path(args[0].config).resolve().as_posix()
     logger.info(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
     # set theme directory
-#    theme_dir = Path(args[0].theme).resolve().as_posix()
     theme_dir = markpub_themes.get_theme_path('dolce')
-    if theme_name := config.get('theme'):
-        theme_dir = f"{init_dir}/.markpub/themes/{theme_name}"
-    logger.info(f"using website theme templates: {theme_dir}")
+    if args[0].theme:
+        theme_dir = Path(args[0].theme).resolve().as_posix()
+    elif theme_name := config.get('theme'):
+        theme_dir = f"{Path(args[0].input).resolve().as_posix()}/.markpub/themes/{theme_name}"
+    logger.info(f"using website theme directory: {theme_dir}")
 
     if 'recent_changes_count' not in config:
         config['recent_changes_count'] = 5
@@ -417,7 +421,7 @@ def build_site(args):
 
 
 # install a default theme for custom use
-def clone_theme(directory, theme_name='dolce'):
+def theme_install(directory, theme_name='dolce'):
     """Install default theme files into an existing markpub site"""
     logger.info(f"Installing theme '{theme_name}' into {directory}")
     
@@ -500,8 +504,10 @@ def init_site(directory):
             with open(workflow_fname, 'w') as file:
                 file.writelines(lines)
         # copy website themes directory
-        default_theme_dir = markpub_themes.get_theme_path('dolce')
-        shutil.copytree(default_theme_dir, init_dir / ".markpub/themes/dolce")
+#        default_theme_dir = markpub_themes.get_theme_path('dolce')
+#        shutil.copytree(default_theme_dir, init_dir / ".markpub/themes/dolce")
+        # create .markpub dir
+        Path(f"{init_dir}/.markpub").mkdir(parents=True, exist_ok=True)
         # copy pip req'ts, javascript, and node info
         shutil.copy(templates_dir / "requirements.txt", init_dir / ".markpub" / "requirements.txt")
         shutil.copy(templates_dir / "build-index.js", init_dir / ".markpub" / "build-index.js")
@@ -550,7 +556,8 @@ def init_site(directory):
 
 def main():
     # setup argument parsers
-    parser = argparse.ArgumentParser(description='Initialize, build, or clone theme for, a website of a collection of Markdown files.')
+    parser = argparse.ArgumentParser(description='Initialize, build, or install theme for, a website of a collection of Markdown files.')
+    parser.add_argument('--version', '-V', action='version', version=f"{APPNAME} {APPVERSION}")
     subparsers = parser.add_subparsers(required=True)
     # subparser for "init" command
     parser_init = subparsers.add_parser('init')
@@ -561,15 +568,15 @@ def main():
     parser_build.add_argument('-i', '--input', required=True, help='input directory of Markdown files')
     parser_build.add_argument('-o', '--output', required=True, help='output website directory')
     parser_build.add_argument('--config', '-c', default='./markpub.yaml', help='path to YAML config file')
-    parser_build.add_argument('--theme', '-t', default='./themes/dolce', help='directory for HTML templates')
+    parser_build.add_argument('--theme', '-t', help='path to directory of HTML theme filess')
     parser_build.add_argument('--root', '-r', default='', help='name for website root directory (to host GitHub Pages)')
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
-    # subparser for "clonetheme" command
-    parser_clonetheme = subparsers.add_parser('clonetheme')
-    parser_clonetheme.add_argument('directory', nargs=1)
-    parser_clonetheme.set_defaults(cmd='clonetheme')
+    # subparser for "theme-install" command
+    parser_theme_install = subparsers.add_parser('theme-install')
+    parser_theme_install.add_argument('directory', nargs=1, help='name of markpub directory in which to install the default theme')
+    parser_theme_install.set_defaults(cmd='theme-install')
     
     args = parser.parse_known_args()
     logger.info(args)
@@ -586,9 +593,9 @@ def main():
                 return
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
-        case 'clonetheme':
-            logger.info(f"Installing local copy of the default theme in directory: {args[0].directory[0]}")
-            clone_theme(args[0].directory[0], 'dolce')
+        case 'theme-install':
+            logger.info(f"Installing the default theme in directory: {args[0].directory[0]}")
+            theme_install(args[0].directory[0], 'dolce')
         case _:
             return
 
