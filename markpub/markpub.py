@@ -145,6 +145,10 @@ def build_site(args):
         theme_dir = Path(args[0].theme).resolve().as_posix()
     elif theme_name := config.get('theme'):
         theme_dir = f"{Path(args[0].input).resolve().as_posix()}/.markpub/themes/{theme_name}"
+    if not Path(theme_dir).exists():
+        logger.error(f"Theme directory '{theme_dir}' does not exist.\nCheck that theme arguments specify valid directories.\n")
+        return
+
     logger.info(f"using website theme directory: {theme_dir}")
 
     if 'recent_changes_count' not in config:
@@ -451,8 +455,15 @@ def theme_install(directory, theme_name='dolce'):
         ignore=shutil.ignore_patterns('__pycache__','__init__.py'),
         dirs_exist_ok=True)
     logger.info(f"Theme '{theme_name}' local install successful.")
-    return
 
+    # add or update "theme:" in config file
+    config_file = f"{markpub_dir}/markpub.yaml"
+    with open(config_file,'r',encoding='utf-8') as f:
+        config_doc = yaml.safe_load(f)
+        config_doc['theme'] = theme_name
+    with open(config_file,'w', encoding='utf-8') as f:
+        yaml.safe_dump(config_doc, f, default_flow_style=False, sort_keys=False)
+    return
 
 # initialize new markpub directory
 def init_site(directory):
