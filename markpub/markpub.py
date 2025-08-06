@@ -436,7 +436,6 @@ def theme_install(directory, theme_name='dolce'):
         return
     
     # Define source and destination path
-    # TODO: 2025-07-13 review use of Paths
     source_theme_dir = markpub_themes.get_theme_path('dolce')
     logging.debug(f"source_theme_dir: {source_theme_dir}")
     dest_theme_dir = f"{markpub_dir}/themes/{theme_name}"
