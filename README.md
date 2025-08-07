@@ -37,8 +37,8 @@ Available commands:
 
 Initialize a new MarkPub site in the specified directory. This creates:
 - `.markpub/markpub.yaml` - Site configuration file
-- Template files for GitHub Pages/Netlify deployment
-- Default theme files
+- Configuration files for GitHub Pages/Netlify deployment
+- `Sidebar.md` - Website navigation links displayed on webpages
 
 **Example:**
 ```shell
@@ -55,8 +55,8 @@ Build a static website from Markdown files.
 
 **Optional options:**
 - `--config, -c <file>` - Path to YAML config file (default: `./markpub.yaml`)
-- `--theme, -t <directory>` - Path to directory of HTML theme files
-- `--root, -r <name>` - Website root directory name (for GitHub Pages hosting)
+- `--theme, -t <directory>` - Path to directory of HTML theme files (default is to use the Markpub provided theme)
+- `--root, -r <name>` - Website root directory name (needed for GitHub Pages hosting)
 - `--lunr` - Create lunr search index (requires npm and lunr to be installed)
 - `--commits` - Include Git commit messages and times in All Pages
 
