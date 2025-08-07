@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-APPVERSION = 'v4.0.0-candidate'
+# synchronize version with pyproject.toml file
+from importlib.metadata import version
+__version__ = version("markpub")
+APPVERSION = version("markpub")
 APPNAME = 'MarkPub'
 
 # setup logging
@@ -32,9 +35,10 @@ import traceback
 from urllib.parse import urlparse
 import yaml
 
-# pip install - mistletoe based Markdown to HTML conversion
+# Markpub libraries and modules - mistletoe based Markdown to HTML conversion
 from mistletoe import Document
 from markpub.mistletoe_renderer.massivewiki import MassiveWikiRenderer
+import markpub_themes
 
 # wiki page links, backlinks table
 wiki_pagelinks = {}
@@ -128,31 +132,36 @@ def datetime_date_serializer(o):
 # build website
 def build_site(args):
     logger.debug("Building ....")
-    input_dir = args[0].input
-    output_dir = args[0].output
-    logger.info(f"build website in {output_dir} from Markdown files in {input_dir}")
-    config_file = Path(args[0].config).absolute().as_posix()
-    logger.info(f"using config file: {config_file}")
-    templates_dir = Path(args[0].templates).absolute().as_posix()
-    logger.info(f"using website theme templates: {templates_dir}")
-    
     logger.info("args: %s", args)
+    logger.info(f"build website in {args[0].output} from Markdown files in {args[0].input}")
 
-    # get configuration
+    # read configuration file
+    config_file = Path(args[0].config).resolve().as_posix()
+    logger.info(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
+    # set theme directory
+    theme_dir = markpub_themes.get_theme_path('dolce')
+    if args[0].theme:
+        theme_dir = Path(args[0].theme).resolve().as_posix()
+    elif theme_name := config.get('theme'):
+        theme_dir = f"{Path(args[0].input).resolve().as_posix()}/.markpub/themes/{theme_name}"
+    if not Path(theme_dir).exists():
+        logger.error(f"Theme directory '{theme_dir}' does not exist.\nCheck that theme arguments specify valid directories.\n")
+        return
+
+    logger.info(f"using website theme directory: {theme_dir}")
+
     if 'recent_changes_count' not in config:
         config['recent_changes_count'] = 5
 
     # remember paths
     dir_output = Path(args[0].output).resolve().as_posix()
-    dir_templates = Path(templates_dir).resolve().as_posix()
-    logger.info(f"dir_templates :{dir_templates}")
     dir_wiki = Path(args[0].input).resolve().as_posix()
     rootdir = '/'
     websiteroot = args[0].root
 
     # get a Jinja2 environment
-    j = jinja2_environment(dir_templates)
+    j = jinja2_environment(theme_dir)
 
     # render html pages from jinja2 templates
     def render_template(template_name, **kwargs):
@@ -374,8 +383,8 @@ def build_site(args):
 
         # copy static assets directory
         logger.debug("copy static assets directory")
-        if os.path.exists(Path(dir_templates) / 'static'):
-            shutil.copytree(Path(dir_templates) / 'static', Path(dir_output), dirs_exist_ok=True)
+        if os.path.exists(Path(theme_dir) / 'static'):
+            shutil.copytree(Path(theme_dir) / 'static', Path(dir_output), dirs_exist_ok=True)
 
         # build all-pages.html
         logger.debug("build all-pages.html")
@@ -414,11 +423,52 @@ def build_site(args):
         traceback.print_exc(e)
     return
 
+
+# install a default theme for custom use
+def theme_install(directory, theme_name='dolce'):
+    """Install default theme files into an existing markpub site"""
+    logger.info(f"Installing theme '{theme_name}' into {directory}")
+    
+    # Check if directory is initialized
+    markpub_dir = Path(directory).resolve() / ".markpub"
+    if not markpub_dir.exists():
+        logger.error(f"Directory {directory} is not initialized. Run 'markpub init' first.")
+        return
+    
+    # Define source and destination path
+    source_theme_dir = markpub_themes.get_theme_path('dolce')
+    logging.debug(f"source_theme_dir: {source_theme_dir}")
+    dest_theme_dir = f"{markpub_dir}/themes/{theme_name}"
+    dest_theme_path = Path(f"{markpub_dir}/themes/{theme_name}")
+
+    # Backup existing theme
+    if dest_theme_path.exists():
+        backup_dir = dest_theme_path.parent / f"{theme_name}-backup-{int(time.time())}"
+        shutil.copytree(dest_theme_dir, backup_dir)
+        logger.info(f"Existing theme backed up to {backup_dir}")
+    
+    # Copy the theme files
+    shutil.copytree(
+        source_theme_dir,
+        dest_theme_dir,
+        ignore=shutil.ignore_patterns('__pycache__','__init__.py'),
+        dirs_exist_ok=True)
+    logger.info(f"Theme '{theme_name}' local install successful.")
+
+    # add or update "theme:" in config file
+    config_file = f"{markpub_dir}/markpub.yaml"
+    with open(config_file,'r',encoding='utf-8') as f:
+        config_doc = yaml.safe_load(f)
+        config_doc['theme'] = theme_name
+    with open(config_file,'w', encoding='utf-8') as f:
+        yaml.safe_dump(config_doc, f, default_flow_style=False, sort_keys=False)
+    return
+
 # initialize new markpub directory
 def init_site(directory):
     # Check the specified directory
     logger.debug(f"init directory: {directory}")
-    init_dir = Path(directory)
+    init_dir = Path(directory).resolve()
     logger.debug(f"init_dir: {init_dir}")
     if init_dir.exists():
         # if any(init_dir.iterdir()):
@@ -463,8 +513,11 @@ def init_site(directory):
                     break
             with open(workflow_fname, 'w') as file:
                 file.writelines(lines)
-        # copy this-website-themes directory
-        shutil.copytree(templates_dir / "this-website-themes", init_dir / ".markpub" / "this-website-themes")
+        # copy website themes directory
+#        default_theme_dir = markpub_themes.get_theme_path('dolce')
+#        shutil.copytree(default_theme_dir, init_dir / ".markpub/themes/dolce")
+        # create .markpub dir
+        Path(f"{init_dir}/.markpub").mkdir(parents=True, exist_ok=True)
         # copy pip req'ts, javascript, and node info
         shutil.copy(templates_dir / "requirements.txt", init_dir / ".markpub" / "requirements.txt")
         shutil.copy(templates_dir / "build-index.js", init_dir / ".markpub" / "build-index.js")
@@ -479,7 +532,7 @@ def init_site(directory):
     # get configuration input
     website_title = input("Enter the website title: ")
     if not website_title: # if no title entered use init directory name
-        website_title = Path(init_dir).absolute().name
+        website_title = Path(init_dir).resolve().name
     logger.debug(f"website title: {website_title}")
     author_name = input("Enter the author name(s): ")
     git_repo = input("Enter Git repository url (for Edit button; optional): ")
@@ -513,7 +566,8 @@ def init_site(directory):
 
 def main():
     # setup argument parsers
-    parser = argparse.ArgumentParser(description='Initialize or build website for a collection of Markdown files.')
+    parser = argparse.ArgumentParser(description='Initialize, build, or install theme for, a website of a collection of Markdown files.')
+    parser.add_argument('--version', '-V', action='version', version=f"{APPNAME} {APPVERSION}")
     subparsers = parser.add_subparsers(required=True)
     # subparser for "init" command
     parser_init = subparsers.add_parser('init')
@@ -524,11 +578,15 @@ def main():
     parser_build.add_argument('-i', '--input', required=True, help='input directory of Markdown files')
     parser_build.add_argument('-o', '--output', required=True, help='output website directory')
     parser_build.add_argument('--config', '-c', default='./markpub.yaml', help='path to YAML config file')
-    parser_build.add_argument('--templates', '-t', default='./this-website-themes/dolce', help='directory for HTML templates')    
+    parser_build.add_argument('--theme', '-t', help='path to directory of HTML theme filess')
     parser_build.add_argument('--root', '-r', default='', help='name for website root directory (to host GitHub Pages)')
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
+    # subparser for "theme-install" command
+    parser_theme_install = subparsers.add_parser('theme-install')
+    parser_theme_install.add_argument('directory', nargs=1, help='name of markpub directory in which to install the default theme')
+    parser_theme_install.set_defaults(cmd='theme-install')
     
     args = parser.parse_known_args()
     logger.info(args)
@@ -545,6 +603,9 @@ def main():
                 return
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
+        case 'theme-install':
+            logger.info(f"Installing the default theme in directory: {args[0].directory[0]}")
+            theme_install(args[0].directory[0], 'dolce')
         case _:
             return
 
