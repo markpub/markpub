@@ -2,11 +2,11 @@
 
 ![PyPI version](https://img.shields.io/pypi/v/markpub)  
 
-MarkPub builds a static website from a directory of Markdown files.  
+MarkPub builds a static HTML website from a directory of Markdown files.  
 The website supports wiki-links, transclusion, and provides full-text
 search.  
 
-MarkPub installs instructions that GitHub Pages and Netlify can run automatically to publish the HTML files on the web.
+MarkPub installs configuration files that GitHub Pages and Netlify can use to automatically publish the HTML files on the web.
 
 ## Requirements
 
@@ -38,7 +38,7 @@ Available commands:
 Initialize a new MarkPub site in the specified directory. This creates:
 - `.markpub/markpub.yaml` - Site configuration file
 - Configuration files for GitHub Pages/Netlify deployment
-- `Sidebar.md` - Website navigation links displayed on webpages
+- `Sidebar.md` - Website navigation links displayed sidebar on webpages
 
 **Example:**
 ```shell
@@ -55,7 +55,7 @@ Build a static website from Markdown files.
 
 **Optional options:**
 - `--config, -c <file>` - Path to YAML config file (default: `./markpub.yaml`)
-- `--theme, -t <directory>` - Path to directory of HTML theme files (default is to use the Markpub provided theme)
+- `--theme, -t <directory>` - Path to directory of HTML theme files (leave off to use the MarkPub-provided theme)
 - `--root, -r <name>` - Website root directory name (needed for GitHub Pages hosting)
 - `--lunr` - Create lunr search index (requires npm and lunr to be installed)
 - `--commits` - Include Git commit messages and times in All Pages
