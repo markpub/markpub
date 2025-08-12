@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["markpub"]
+packages = ["src/markpub"]
 
 [tool.uv.sources]
 markpub = { workspace = true }
