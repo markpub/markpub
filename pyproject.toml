@@ -32,6 +32,7 @@ markpub = { workspace = true }
 [dependency-groups]
 dev = [
     "markpub",
+    "pytest>=8.4.1",
 ]
 
 [project.urls]
