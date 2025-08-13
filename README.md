@@ -14,9 +14,10 @@ MarkPub installs configuration files that GitHub Pages and Netlify can use to au
 
 ## Install
 
+### Using pip
 ``` shell
 pip install markpub
-```  
+```
 
 ## Usage
 
