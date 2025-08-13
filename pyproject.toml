@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "markpub"
-version = "1.0.2"
+version = "1.1.0"
 description = "Build (web publish) Markdown and Massive Wiki sites."
 license = "MIT"
 authors = [
@@ -26,6 +26,7 @@ dependencies = [
     "pyyaml>=6.0.1",
     "six>=1.16.0",
     "python-dateutil>=2.9.0.post0",
+    "markpub-themes>=1.0.1",
 ]
 
 [project.urls]
