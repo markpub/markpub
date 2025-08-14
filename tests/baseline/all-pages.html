@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Pages - Markpub Test Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/markpub-static/css/style.css">
+    <link rel="stylesheet" href="/markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn" class="hidden">☰</span><a class="button is-light" id="header-link" href="/index.html" style="text-decoration: none;">Markpub Test Website</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button> <button id="move-btn"
+        class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/README.html">HOME</a></li>
+<li><a href="/search.html">SEARCH</a></li>
+<li><a href="/all-pages.html">ALL PAGES</a></li>
+<li><a href="/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+    <div id="main-column" class="allpages-max-width">
+      <link href='https://unpkg.com/gridjs/dist/theme/mermaid.min.css' rel='stylesheet'>
+      <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+      <script>
+	document.addEventListener("DOMContentLoaded", function () {
+            new gridjs.Grid({
+		from: document.getElementById('sourceTable'),
+		sort: true,
+		fixedHeader: true,
+		search: true,
+		autoWidth: true,
+		language: {
+                    'search': {
+			'placeholder': '🔍 Search this table...'
+                    }
+		}
+            }).render(document.getElementById('destinationWrapper'));
+	});
+      </script>
+
+      <div id='allPagesTableWrapper'>
+        <div id='destinationWrapper'></div>
+        <table id='sourceTable'>
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>Change</th>
+              <th>By</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td>
+                <a href="/Link_workbench/_octothorpeFirstPage.html">#octothorpeFirstPage</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/backlinks.html">backlinks</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Filename,_with_a_comma.html">Filename, with a comma</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/folder-folder/folder_in_a_folder_test_page.html">folder in a folder test page</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/is_this_wiki_page7.html">is this? wiki page7</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/Link_workbench.html">Link workbench</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/Massive_Wiki_Builder_wikilinks_specification.html">Massive Wiki Builder wikilinks specification</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/octothorpe_wiki_page.html">octothorpe #wiki page</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/testdir/pageOne.html">pageOne</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/testdir/pageZero.html">pageZero</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/README.html">README</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/testdir/sameFolder_note.html">sameFolder note</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/samePageName.html">samePageName</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/subdir/samePageName.html">samePageName</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/Test_Page_With_A_Question_Mark.html">Test Page# With A Question Mark</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/Test_Page:_With_A_Colon.html">Test Page: With A Colon</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/Test_Page_With_A_Question_Mark.html">Test Page? With A Question Mark</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/the_80_good_enough_claim.html">the 80% good enough claim</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/subdir/the_special_wiki_page8.html">the special??wiki page8</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/The_Walrus.html">The Walrus</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/This_filename_has_double_quotes.html">This filename has "double" quotes</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/what_about_this_page.html">what   about? #??____this ##page</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/testdir/wiki_link_test_page.html">wiki link test page</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/wiki_page1.html">wiki page1</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/wiki_page2.html">wiki page2</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/wiki_page3.html">wiki page3</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/Link_workbench/subdir/wiki_page4.html">wiki page4</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/wiki_page5.html">wiki page5</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/subdir2/wiki_page6.html">wiki page6</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <a href="/subdir2/this._directory._contains./wiki_page8.html">wiki page8</a>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="/markpub-static/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wiki link test page - Markpub Test Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/markpub-static/css/style.css">
+    <link rel="stylesheet" href="/markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/index.html">Markpub Test Website</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/README.html">HOME</a></li>
+<li><a href="/search.html">SEARCH</a></li>
+<li><a href="/all-pages.html">ALL PAGES</a></li>
+<li><a href="/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <h1>wiki link test page</h1>
+<h3>2022-04-23</h3>
+<p>Here we are providing samples for fuzzy linking to other pages:</p>
+<ul>
+<li>one at the root <a class="wikilink" href="/The_Walrus.html">The Walrus</a></li>
+<li>one in this folder <a class="wikilink" href="/Link_workbench/testdir/sameFolder_note.html">sameFolder note</a></li>
+<li>one in a folder in a folder <a class="wikilink" href="/Link_workbench/folder-folder/folder_in_a_folder_test_page.html">folder in a folder test page</a></li>
+<li>let's include an image <span class="incipient-wikilink">of a poem</span></li>
+</ul>
+<h3>2022-05-21</h3>
+<p>Another set of links with explicit paths to wiki pages for testing:
+(N.B. Obsidian behavior when trying to create these pages by double-clicking in read-view: Obsidian does not create a new page even when subdir exists (it is more complicated than that))</p>
+<ul>
+<li><a class="wikilink" href="/wiki_page1.html">wiki page1</a></li>
+<li><a class="wikilink" href="/Link_workbench/wiki_page2.html">../wiki page2</a></li>
+<li><a class="wikilink" href="/wiki_page3.html">../../wiki page3</a></li>
+<li><a class="wikilink" href="/Link_workbench/subdir/wiki_page4.html">../subdir/wiki page4</a></li>
+<li><a class="wikilink" href="/wiki_page5.html">/wiki page5</a></li>
+<li><a class="wikilink" href="/subdir2/wiki_page6.html">/subdir2/wiki page6</a></li>
+<li><a class="wikilink" href="/Link_workbench/testdir/text_only_wiki_page.txt">text only wiki page.txt</a></li>
+<li><a class="wikilink" href="/is_this_wiki_page7.html">is this? wiki page7</a></li>
+<li><a class="wikilink" href="/Link_workbench/subdir/the_special_wiki_page8.html">the special??wiki page8</a></li>
+<li><a class="wikilink" href="/Link_workbench/octothorpe_wiki_page.html">Link workbench/octothorpe #wiki page</a></li>
+<li><a class="wikilink" href="/Link_workbench/what_about_this_page.html">Link workbench/what   about? #??____this ##page</a></li>
+<li><a class="wikilink" href="/subdir2/this._directory._contains./wiki_page8.html">/subdir2/this. directory. contains./wiki page8</a></li>
+<li><a class="wikilink" href="/Filename,_with_a_comma.html">Filename, with a comma</a></li>
+<li><a class="wikilink" href="/This_filename_has_double_quotes.html">This filename has "double" quotes</a></li>
+</ul>
+<h3>2022-05-09</h3>
+<p>We seem to be able to generate full wikilinks to other pages.</p>
+
+      
+    </div>
+  </div>
+  <script src="/markpub-static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Markpub Test Website</strong> by Markpub Development Team.</div>
+    
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+  </div>
+</footer>
+</body>
+</html>

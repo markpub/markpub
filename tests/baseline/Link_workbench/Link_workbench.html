@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link workbench - Markpub Test Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/markpub-static/css/style.css">
+    <link rel="stylesheet" href="/markpub-static/css/custom.css">
+    <link rel="stylesheet" href="https://unpkg.com/bluesky-comments@0.9.0/dist/bluesky-comments.css">
+    
+    
+  </head>
+<body>
+  <div id="header">
+    <span id="hamburger-btn"
+    class="hidden">&#9776;</span><a class="button is-light" id="header-link" href="/index.html">Markpub Test Website</a>
+  </div>
+
+  <div class="container" id="flex-container">
+    <div id="side-column">
+      <div>
+        <button id="hide-btn">Hide</button>
+        <button id="move-btn" class="hidden">Move to Sidebar</button>
+      </div>
+      <h3>Site Navigation</h3>
+<div class="navlinks">
+<ul>
+<li><a class="wikilink" href="/README.html">HOME</a></li>
+<li><a href="/search.html">SEARCH</a></li>
+<li><a href="/all-pages.html">ALL PAGES</a></li>
+<li><a href="/recent-pages.html">RECENT CHANGES</a></li>
+</ul>
+</div>
+<div class="navlinks">
+  <button onclick="location.href=`${randomPageLink()}`">
+    RANDOM PAGE
+  </button>
+</div>
+
+    </div>
+
+    <div id="main-column">
+      
+      <h1>Link workbench</h1>
+<p>These are a set of pages that help us think through and test wiki link handling, both for <span class="incipient-wikilink">Massive Wiki Builder</span>, and Massive Wiki in general.</p>
+<p>See:</p>
+<ul>
+<li><a class="wikilink" href="/Link_workbench/Massive_Wiki_Builder_wikilinks_specification.html">Massive Wiki Builder wikilinks specification</a></li>
+<li><a href="https://github.com/peterkaminski/massivewikibuilder/issues/34">Enhancement request: switchable transformation for page filename to slug · Issue #34</a></li>
+<li>other files in this directory</li>
+</ul>
+<p>Concepts include:</p>
+<ul>
+<li>page name - the title of the page, used in wiki links
+<ul>
+<li>filename - when the wiki is stored in a filesystem, the name of the file that contains the page</li>
+</ul>
+</li>
+<li>slug - the page identifier, usually a transformation of the page name / filename, used for a page's URL</li>
+<li>filename mangling - the process of turning an arbitrary filename into a URL-compliant slug. less frequently, might refer to transformations from page name to file name, respecting filesystem limitations on characters or length. more usually, a filesystem-based wiki will prevent people from creating page titles that cannot also be file names.</li>
+</ul>
+<h2>Other systems</h2>
+<ul>
+<li><a href="https://github.com/hedgedoc/react-client/issues/443#issuecomment-762491225">HedgeDoc will not be a wiki</a>, and related matters - possible wiki link syntaxes, URL safety, Unicode issues.</li>
+<li>FedWiki:
+<ul>
+<li><a href="https://github.com/fedwiki/wiki-client/blob/3e0a1dd499b5eb637eeb4a03970c9f0a4310e619/lib/page.coffee#L17-L18">https://github.com/fedwiki/wiki-client/blob/3e0a1dd499b5eb637eeb4a03970c9f0a4310e619/lib/page.coffee#L17-L18</a></li>
+<li><a href="http://ward.asia.wiki.org/view/beyond-slugs">Beyond Slugs</a> (ward.asia.wiki.org)</li>
+</ul>
+</li>
+</ul>
+
+      
+      <hr>
+      <div>
+	<h4>Pages that link to this page</h4>
+	<ul>
+	  
+	  <li><a href="/Link_workbench/Massive_Wiki_Builder_wikilinks_specification.html">Massive Wiki Builder wikilinks specification</a>
+	  
+	</ul>
+      </div>
+      
+    </div>
+  </div>
+  <script src="/markpub-static/js/script.js"></script>
+  
+  <footer class="footer">
+  <div class="content has-text-centered">
+    
+    <div><strong>Markpub Test Website</strong> by Markpub Development Team.</div>
+    
+    
+    
+    <div>Licensed under <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+    
+  </div>
+</footer>
+</body>
+</html>

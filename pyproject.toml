@@ -23,8 +23,17 @@ dependencies = [
     "six>=1.17.0",
 ]
 
+[project.optional-dependencies]
+test = ["pytest>=8.4.1"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/markpub"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
 
 [tool.uv.sources]
 markpub = { workspace = true }
@@ -40,3 +49,4 @@ repository = "https://github.com/MarkPub/markpub"
 
 [project.scripts]
 markpub = "markpub.markpub:main"
+
