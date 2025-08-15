@@ -383,7 +383,7 @@ def build_site(args):
 
         # copy static assets directory
         logger.debug("copy static assets directory")
-        if os.path.exists(Path(theme_dir) / 'static'):
+        if (Path(theme_dir) / 'static').exists():
             shutil.copytree(Path(theme_dir) / 'static', Path(dir_output), dirs_exist_ok=True)
 
         # build all-pages.html
