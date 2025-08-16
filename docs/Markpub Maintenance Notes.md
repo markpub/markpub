@@ -39,7 +39,7 @@ uv version --bump [patch|minor|major]
   uv build
 	```  
 
-- Package testing:  
+- Package testing (prior to publishing):  
 	- one recommended way to test the latest built version:  
 	```shell
 	cd /some/test/directory
@@ -52,7 +52,7 @@ uv version --bump [patch|minor|major]
 	markpub -V  # displays the version number being tested
 	```  
 
-	- from "/some/test/directory" test `markpub` "init", "build". "theme-install" commands
+	- from "/some/test/directory" test `markpub` "init", "build”, "theme-install" commands
 	  E.g. (assume "/some/test/markdown/documents" is a collection of Markdown files):
 	  ```shell
 	  # initialize a document collection
@@ -61,8 +61,12 @@ uv version --bump [patch|minor|major]
 	  prompts; enter CR for github prompt
 	  # build a website
 	  markpub build -i /some/test/markdown/documents -o ./output -c /some/test/markdown/documents/.markpub/markpub.yaml
+	  # to view the website
+	  cd output
+	  python -m http.server
+	  # and open a browser at <http://localhost:8000>
 	  ```  
-	  
+
 
 
 	  
