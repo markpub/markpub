@@ -194,6 +194,7 @@ def build_site(args):
         # prepare base context
         context = {
             'title': file.stem,
+            'fs_path': wiki_pagelinks.get(file.stem.lower(), {}).get('fs_path', []),
             'markdown_body': markdown_body,
             'backlinks': wiki_pagelinks.get(file.stem.lower(), {}).get('backlinks', [])
         }
