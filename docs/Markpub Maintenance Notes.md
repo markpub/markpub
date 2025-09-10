@@ -21,9 +21,9 @@ pipx ensurepath
 
 - Installing `uv`: recommended setup
   - use `pipx` to install `uv`
-	```shell
-	pipx install uv
-	```  
+```shell
+pipx install uv
+```  
 	
 - Package building:  
 	- synchronize `pyproject.toml` with current setup
@@ -31,13 +31,13 @@ pipx ensurepath
   uv sync
   ```  
   - to change the version number of this package:  
-	```shell
+```shell
 uv version --bump [patch|minor|major]
-	```  
-	- to build the current version of this package:  
-	```shell
+```  
+  - to build the current version of this package:  
+```shell
   uv build
-	```  
+```  
 
 - Package testing (prior to publishing):  
 	- one recommended way to test the latest built version:  
@@ -54,18 +54,18 @@ uv version --bump [patch|minor|major]
 
 	- from "/some/test/directory" test `markpub` "init", "build”, "theme-install" commands
 	  E.g. (assume "/some/test/markdown/documents" is a collection of Markdown files):
-	  ```shell
-	  # initialize a document collection
-	  markpub init /some/test/markdown/documents
-	  # provide a website and author name in response to Terminal
-	  prompts; enter CR for github prompt
-	  # build a website
-	  markpub build -i /some/test/markdown/documents -o ./output -c /some/test/markdown/documents/.markpub/markpub.yaml
-	  # to view the website
-	  cd output
-	  python -m http.server
-	  # and open a browser at <http://localhost:8000>
-	  ```  
+	```shell
+	# initialize a document collection
+	markpub init /some/test/markdown/documents
+	# provide a website and author name in response to Terminal
+	prompts; enter CR for github prompt
+	# build a website
+	markpub build -i /some/test/markdown/documents -o ./output -c /some/test/markdown/documents/.markpub/markpub.yaml
+	# to view the website
+	cd output
+	python -m http.server
+	# and open a browser at <http://localhost:8000>
+	```  
 
 
 
