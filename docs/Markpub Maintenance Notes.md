@@ -32,7 +32,7 @@ pipx install uv
   ```  
   - to change the version number of this package:  
 ```shell
-uv version --bump [patch|minor|major]
+uv version --bump [major|minor|patch]
 ```  
   - to build the current version of this package:  
 ```shell
