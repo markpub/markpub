@@ -25,16 +25,16 @@ pipx ensurepath
 pipx install uv
 ```  
 	
-- Package building:  
-	- synchronize `pyproject.toml` with current setup
+##### Package building:  
+- synchronize `pyproject.toml` with current setup
   ```shell
   uv sync
   ```  
-  - to change the version number of this package:  
+- to change the version number of this package:  
 ```shell
 uv version --bump [major|minor|patch]
 ```  
-  - to build the current version of this package:  
+- to build the current version of this package:  
 ```shell
   uv build
 ```  
@@ -52,7 +52,7 @@ uv version --bump [major|minor|patch]
 	markpub -V  # displays the version number being tested
 	```  
 
-	- from "/some/test/directory" test `markpub` "init", "build”, "theme-install" commands
+  - from "/some/test/directory" test `markpub` "init", "build”, "theme-install" commands
 	  E.g. (assume "/some/test/markdown/documents" is a collection of Markdown files):
 	```shell
 	# initialize a document collection
@@ -66,6 +66,14 @@ uv version --bump [major|minor|patch]
 	python -m http.server
 	# and open a browser at <http://localhost:8000>
 	```  
+
+##### Package publishing:  
+- bump package version; git commit “version bump”; re-build(?); then publish
+- (TODO: document how to authenticate for publishing)
+
+```shell
+uv publish
+```  
 
 
 
