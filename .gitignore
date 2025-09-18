@@ -5,6 +5,9 @@
 *~
 \#*\#
 
+# authentication
+env.sh
+
 # Python
 venv
 __pycache__
