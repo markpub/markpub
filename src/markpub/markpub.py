@@ -202,7 +202,7 @@ def build_site(args):
         if file.stem != 'README' and file.name != config.get('sidebar', ''):
             if config.get('edit_url'):
                 context['edit_url'] = (
-                    f"{config['edit_url']}{config['edit_branch']}"
+                    f"{config['edit_url'].rstrip('/')}/{config['edit_branch']}"
                     f"{wiki_pagelinks.get(file.stem.lower(), {}).get('fs_path', '')}"
                 )
                 context['git_forge'] = git_forge_proper_name(config['edit_url'])
