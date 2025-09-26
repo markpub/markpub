@@ -199,7 +199,9 @@ def build_site(args):
             'backlinks': wiki_pagelinks.get(file.stem.lower(), {}).get('backlinks', [])
         }
         # determine edit URL
-        if file.stem != 'README' and file.name != config.get('sidebar', ''):
+        # TODO: exclude no_edit_url_pages
+        no_edit_patterns = config.get('no_edit_url_pages') or []
+        if file.stem != 'README' and file.name != config.get('sidebar', '') and not any(Path(file).match(no_edit) for no_edit in no_edit_patterns):
             if config.get('edit_url'):
                 context['edit_url'] = (
                     f"{config['edit_url'].rstrip('/')}/{config['edit_branch']}"
@@ -245,10 +247,15 @@ def build_site(args):
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
         allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False) if Path(f).is_file()]
-        # exclude no_edit_url_pages and excluded_directories
-        allfiles = [f for f in allfiles if not (any(no_edit in f for no_edit in (config.get('no_edit_url_pages') or [])) or
-                    any(ex_dir in f for ex_dir in (config.get('excluded_directories') or [])) or
-                    (config.get('sidebar') is not None and f.endswith(config.get('sidebar'))))]
+        # remove no_edit_url_pages, excluded_directories, and sidebar
+#        no_edit_patterns = config.get('no_edit_url_pages') or []
+        no_edit_patterns = []
+        excluded_dirs = config.get('excluded_directories') or []
+        sidebar_file = config.get('sidebar')
+        allfiles = [f for f in allfiles if not (
+            any(Path(f).match(no_edit) for no_edit in no_edit_patterns) or
+            any(ex_dir in f for ex_dir in excluded_dirs) or
+            (sidebar_file is not None and f.endswith(sidebar_file)))]
 
         # read wiki content and build wikilinks dictionary; lunr index lists
         lunr_idx_data=[]
