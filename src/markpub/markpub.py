@@ -199,7 +199,7 @@ def build_site(args):
             'backlinks': wiki_pagelinks.get(file.stem.lower(), {}).get('backlinks', [])
         }
         # determine edit URL
-        # TODO: exclude no_edit_url_pages
+        # some pages to not have git_forge edit button
         no_edit_patterns = config.get('no_edit_url_pages') or []
         if file.stem != 'README' and file.name != config.get('sidebar', '') and not any(Path(file).match(no_edit) for no_edit in no_edit_patterns):
             if config.get('edit_url'):
@@ -209,7 +209,7 @@ def build_site(args):
                 )
                 context['git_forge'] = git_forge_proper_name(config['edit_url'])
         else:
-                # For README or sidebar, explicitly set empty edit_url
+                # For README, sidebar, or config['no_edit_url_pages'] explicitly set empty edit_url
                 context['edit_url'] = ''
         return context
 
@@ -247,13 +247,10 @@ def build_site(args):
 
         # get list of wiki files using a glob.iglob iterator (consumed in list comprehension)
         allfiles = [f for f in glob.iglob(f"{dir_wiki}/**/*.*", recursive=True, include_hidden=False) if Path(f).is_file()]
-        # remove no_edit_url_pages, excluded_directories, and sidebar
-#        no_edit_patterns = config.get('no_edit_url_pages') or []
-        no_edit_patterns = []
+        # remove excluded_directories, and sidebar
         excluded_dirs = config.get('excluded_directories') or []
         sidebar_file = config.get('sidebar')
         allfiles = [f for f in allfiles if not (
-            any(Path(f).match(no_edit) for no_edit in no_edit_patterns) or
             any(ex_dir in f for ex_dir in excluded_dirs) or
             (sidebar_file is not None and f.endswith(sidebar_file)))]
 
@@ -408,7 +405,9 @@ def build_site(args):
 
         # build recent-pages.html
         logger.debug(f"build recent-pages.html with {config['recent_changes_count']} entries.")
-        recent_pages = all_pages_chrono[:config['recent_changes_count']]
+        no_edit_url_pages = [pattern.replace('.md', '*') for pattern in config['no_edit_url_pages']]
+        filtered_pages = [page for page in all_pages_chrono if not any(Path(page['path']).match(no_edit) for no_edit in no_edit_url_pages)]
+        recent_pages = filtered_pages[:config['recent_changes_count']]
         html = render_template('recent-pages.html',
                                pages=recent_pages)
         (Path(dir_output) / "recent-pages.html").write_text(html)
