@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "markpub"
-version = "1.2.2"
+version = "1.2.3"
 description = "Build (web publish) Markdown and Massive Wiki sites."
 license = "MIT"
 authors = [
