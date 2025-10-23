@@ -405,7 +405,7 @@ def build_site(args):
 
         # build recent-pages.html
         logger.debug(f"build recent-pages.html with {config['recent_changes_count']} entries.")
-        no_edit_url_pages = [pattern.replace('.md', '*') for pattern in config['no_edit_url_pages']]
+        no_edit_url_pages = [pattern.replace('.md', '*') for pattern in (config['no_edit_url_pages'] or [])]
         filtered_pages = [page for page in all_pages_chrono if not any(Path(page['path']).match(no_edit) for no_edit in no_edit_url_pages)]
         recent_pages = filtered_pages[:config['recent_changes_count']]
         html = render_template('recent-pages.html',
