@@ -1,8 +1,8 @@
 # the title of your wiki
-wiki_title: Developer Wiki (Massive Wiki)
+wiki_title: Website (Massive Wiki) Name or Title
 
 # the author(s) of your wiki
-author: the Massive Wiki Team
+author: the website author name(s)
 
 # URL of the centralized Git repo, with trailing slash, used for Edit This Page
 edit_url: 'https://github.com/Massive-Wiki/developer-massive-wiki/'
