@@ -28,6 +28,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+from simple_term_menu import TerminalMenu
 import subprocess
 import textwrap
 import time
@@ -431,7 +432,20 @@ def build_site(args):
     return
 
 
-# install a default theme for custom use
+# install a theme for custom use
+def select_markpub_theme():
+    themes = sorted(markpub_themes.list_themes())
+    """Interactive menu with arrow key navigation."""
+    terminal_menu = TerminalMenu(
+        themes,
+        title="Select a theme:",
+        menu_cursor="> ",
+        menu_cursor_style=("fg_cyan", "bold"),
+        menu_highlight_style=("fg_cyan", "bold")
+    )
+    choice_idx = terminal_menu.show()
+    return themes[choice_idx] if choice_idx is not None else None
+
 def theme_install(directory, theme_name='dolce'):
     """Install default theme files into an existing markpub site"""
     logger.info(f"Installing theme '{theme_name}' into {directory}")
@@ -443,7 +457,7 @@ def theme_install(directory, theme_name='dolce'):
         return
     
     # Define source and destination path
-    source_theme_dir = markpub_themes.get_theme_path('dolce')
+    source_theme_dir = markpub_themes.get_theme_path(theme_name)
     logging.debug(f"source_theme_dir: {source_theme_dir}")
     dest_theme_dir = f"{markpub_dir}/themes/{theme_name}"
     dest_theme_path = Path(f"{markpub_dir}/themes/{theme_name}")
@@ -611,8 +625,11 @@ def main():
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
         case 'theme-install':
-            logger.info(f"Installing the default theme in directory: {args[0].directory[0]}")
-            theme_install(args[0].directory[0], 'dolce')
+            if theme_selected := select_markpub_theme():
+                logger.info(f"Installing theme {theme_selected} in directory: {args[0].directory[0]}")
+                theme_install(args[0].directory[0], theme_selected)
+            else:
+                logger.info(f"Exiting - no theme installed.")
         case _:
             return
 
