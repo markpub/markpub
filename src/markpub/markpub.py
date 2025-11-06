@@ -28,7 +28,6 @@ import json
 from pathlib import Path
 import re
 import shutil
-from simple_term_menu import TerminalMenu
 import subprocess
 import textwrap
 import time
@@ -431,60 +430,6 @@ def build_site(args):
         traceback.print_exc(e)
     return
 
-
-# install a theme for custom use
-def select_markpub_theme():
-    themes = sorted(markpub_themes.list_themes())
-    """Interactive menu with arrow key navigation."""
-    terminal_menu = TerminalMenu(
-        themes,
-        title="Select a theme:",
-        menu_cursor="> ",
-        menu_cursor_style=("fg_cyan", "bold"),
-        menu_highlight_style=("fg_cyan", "bold")
-    )
-    choice_idx = terminal_menu.show()
-    return themes[choice_idx] if choice_idx is not None else None
-
-def theme_install(directory, theme_name='dolce'):
-    """Install default theme files into an existing markpub site"""
-    logger.info(f"Installing theme '{theme_name}' into {directory}")
-    
-    # Check if directory is initialized
-    markpub_dir = Path(directory).resolve() / ".markpub"
-    if not markpub_dir.exists():
-        logger.error(f"Directory {directory} is not initialized. Run 'markpub init' first.")
-        return
-    
-    # Define source and destination path
-    source_theme_dir = markpub_themes.get_theme_path(theme_name)
-    logging.debug(f"source_theme_dir: {source_theme_dir}")
-    dest_theme_dir = f"{markpub_dir}/themes/{theme_name}"
-    dest_theme_path = Path(f"{markpub_dir}/themes/{theme_name}")
-
-    # Backup existing theme
-    if dest_theme_path.exists():
-        backup_dir = dest_theme_path.parent / f"{theme_name}-backup-{int(time.time())}"
-        shutil.copytree(dest_theme_dir, backup_dir)
-        logger.info(f"Existing theme backed up to {backup_dir}")
-    
-    # Copy the theme files
-    shutil.copytree(
-        source_theme_dir,
-        dest_theme_dir,
-        ignore=shutil.ignore_patterns('__pycache__','__init__.py'),
-        dirs_exist_ok=True)
-    logger.info(f"Theme '{theme_name}' local install successful.")
-
-    # add or update "theme:" in config file
-    config_file = f"{markpub_dir}/markpub.yaml"
-    with open(config_file,'r',encoding='utf-8') as f:
-        config_doc = yaml.safe_load(f)
-        config_doc['theme'] = theme_name
-    with open(config_file,'w', encoding='utf-8') as f:
-        yaml.safe_dump(config_doc, f, default_flow_style=False, sort_keys=False)
-    return
-
 # initialize new markpub directory
 def init_site(directory):
     # Check the specified directory
@@ -587,7 +532,7 @@ def init_site(directory):
 
 def main():
     # setup argument parsers
-    parser = argparse.ArgumentParser(description='Initialize, build, or install theme for, a website of a collection of Markdown files.')
+    parser = argparse.ArgumentParser(description='Initialize or build a website of a collection of Markdown files.')
     parser.add_argument('--version', '-V', action='version', version=f"{APPNAME} {APPVERSION}")
     subparsers = parser.add_subparsers(required=True)
     # subparser for "init" command
@@ -604,10 +549,6 @@ def main():
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
-    # subparser for "theme-install" command
-    parser_theme_install = subparsers.add_parser('theme-install')
-    parser_theme_install.add_argument('directory', nargs=1, help='name of markpub directory in which to install the default theme')
-    parser_theme_install.set_defaults(cmd='theme-install')
     
     args = parser.parse_known_args()
     logger.info(args)
@@ -624,12 +565,6 @@ def main():
                 return
             logger.info(f'Building website in directory {args[0].output} from Markdown files in {args[0].input}')
             build_site(args)
-        case 'theme-install':
-            if theme_selected := select_markpub_theme():
-                logger.info(f"Installing theme {theme_selected} in directory: {args[0].directory[0]}")
-                theme_install(args[0].directory[0], theme_selected)
-            else:
-                logger.info(f"Exiting - no theme installed.")
         case _:
             return
 
