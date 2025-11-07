@@ -140,13 +140,16 @@ def build_site(args):
     logger.info(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
     # set theme directory
-    theme_dir = markpub_themes.get_theme_path('dolce')
-    if args[0].theme:
-        theme_dir = Path(args[0].theme).resolve().as_posix()
-    elif theme_name := config.get('theme'):
-        theme_dir = f"{Path(args[0].input).resolve().as_posix()}/.markpub/themes/{theme_name}"
-    if not Path(theme_dir).exists():
-        logger.error(f"Theme directory '{theme_dir}' does not exist.\nCheck that theme arguments specify valid directories.\n")
+    try:
+        theme_name = config.get('theme')
+        if theme_name is None:
+            theme_dir = markpub_themes.get_theme_path('dolce')
+        elif Path(f"{args[0].input}/.markpub/themes/{theme_name}").resolve().exists():
+            theme_dir = Path(f"{args[0].input}/.markpub/themes/{theme_name}").resolve().as_posix()
+        else:
+            theme_dir = markpub_themes.get_theme_path(theme_name)
+    except Exception as e:
+        print(f"ERROR: {e}\t- Check 'theme:' value in 'markpub.yaml' file.")
         return
 
     logger.info(f"using website theme directory: {theme_dir}")
