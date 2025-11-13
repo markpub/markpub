@@ -1,4 +1,4 @@
-name: MarkPUb deploy to GitHub Pages
+name: Markpub deploy to GitHub Pages
 
 on:
   push:
