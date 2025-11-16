@@ -30,7 +30,6 @@ markpub [--version] <command> [options]
 Available commands:
 - `init` - Initialize a new MarkPub site
 - `build` - Build HTML website from Markdown files
-- `theme-install` - Install default theme in a directory
 
 ### Commands
 
@@ -56,7 +55,6 @@ Build a static website from Markdown files.
 
 **Optional options:**
 - `--config, -c <file>` - Path to YAML config file (default: `./markpub.yaml`)
-- `--theme, -t <directory>` - Path to directory of HTML theme files (leave off to use the MarkPub-provided theme)
 - `--root, -r <name>` - Website root directory name (needed for GitHub Pages hosting)
 - `--lunr` - Create lunr search index (requires npm and lunr to be installed)
 - `--commits` - Include Git commit messages and times in All Pages
@@ -66,20 +64,11 @@ Build a static website from Markdown files.
 # Basic build
 markpub build -i my-wiki -o my-wiki-site
 
-# Build with custom theme and search
-markpub build -i my-wiki -o my-wiki-site --theme custom-theme --lunr
+# Build with search
+markpub build -i my-wiki -o my-wiki-site --lunr
 
 # Build for GitHub Pages with Git history
 markpub build -i my-wiki -o my-wiki-site --root my-repo --commits
-```
-
-#### `markpub theme-install <directory>`
-
-Install the default theme ('dolce') in the specified markpub directory.
-
-**Example:**
-```shell
-markpub theme-install my-wiki
 ```
 
 ### Getting Help
@@ -90,7 +79,15 @@ Use `--help` with any command for detailed usage information:
 markpub --help
 markpub init --help
 markpub build --help
-markpub theme-install --help
+```
+
+### Markpub website themes
+
+Markpub website themes are managed by the Python package [markpub-themes](https://pypi.org/project/markpub-themes/)  
+Management and use of themes is documented there. This package is installed with `markpub`, and after installation, help information is available:  
+
+```shell
+markpub-themes -h
 ```
 
 ## Documentation  
