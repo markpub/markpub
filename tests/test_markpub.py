@@ -4,8 +4,8 @@ import subprocess
 import pytest
 import filecmp
 
-import logging                                                                                                       
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')                                         
+import logging
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def run_markpub():
     """
