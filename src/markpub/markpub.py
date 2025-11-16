@@ -82,7 +82,7 @@ def scrub_path(filepath):
 
 # find outgoing wikilinks in a wiki page
 def find_tolinks(file):
-    with open(file, 'r', encoding='utf-8') as infile:
+    with open(file, encoding='utf-8') as infile:
         pagetext = infile.read()
     # use negative lookbehind assertion to exclude '![[' links
     wikilink_pattern = re.compile(r"(?<!!)\[\[ *(.+?) *(\| *.+?)? *\]\]")
@@ -240,8 +240,8 @@ def build_site(args):
         # insure that a README.md file exists at wiki root directory; create if needed
         #   FIRST rename any existing index.html file
         if Path(f"{dir_wiki}/index.html").exists():
-           Path(f"{dir_wiki}/index.html").rename(f"{dir_wiki}/previous-index.html") 
-        if not Path(f"{dir_wiki}/README.md").exists(): 
+           Path(f"{dir_wiki}/index.html").rename(f"{dir_wiki}/previous-index.html")
+        if not Path(f"{dir_wiki}/README.md").exists():
             if Path(f"{dir_wiki}/index.md").exists():
                 shutil.copy(f"{dir_wiki}/index.md", f"{dir_wiki}/README.md")
             else:
@@ -283,7 +283,7 @@ def build_site(args):
                 logger.debug("html path: %s", html_path)
                 # add html path and backlinks list to wiki_pagelinks dict
                 wiki_pagelinks[Path(file).name.lower()] = {'fs_path':fs_path, 'html_path':html_path, 'backlinks':[]}
-                
+
         logger.debug("wiki page links: %s", wiki_pagelinks)
         logger.debug("lunr index length %s: ",len(lunr_idx_data))
         # update wiki_pagelinks dictionary with backlinks
@@ -302,7 +302,7 @@ def build_site(args):
         # render all the Markdown files
         logger.debug("copy wiki to output; render .md files to HTML")
         all_pages = []
-        build_time = datetime.datetime.now(datetime.timezone.utc).strftime("%A, %B %d, %Y at %H:%M UTC")
+        build_time = datetime.datetime.now(datetime.UTC).strftime("%A, %B %d, %Y at %H:%M UTC")
 
         if 'sidebar' in config:
             sidebar_body = sidebar_convert_markdown(Path(dir_wiki) / config['sidebar'], rootdir, args[0].input, websiteroot)
@@ -330,7 +330,7 @@ def build_site(args):
                 page_context['bluesky_comments_post'] = front_matter.get('bluesky_comments_post', '')
                 html = render_template('page.html', **page_context)
                 (Path(dir_output+clean_filepath).with_suffix(".html")).write_text(html)
-                
+
                 # get commit message and time
                 date = ''
                 change = ''
@@ -341,7 +341,7 @@ def build_site(args):
                         p = subprocess.run(["git", "-C", Path(root), "log", "-1", '--pretty="%cI\t%an\t%s"', Path(file).name], capture_output=True, check=True)
                         logger.debug(f"subprocess result: '{p.stdout.decode('utf-8')}'")
                         (date, author, change) = p.stdout.decode('utf-8')[1:-2].split('\t', 2)
-                        date = parse(date).astimezone(datetime.timezone.utc).strftime("%Y-%m-%d, %H:%M")
+                        date = parse(date).astimezone(datetime.UTC).strftime("%Y-%m-%d, %H:%M")
                     except Exception as e:
                         logger.error(f"git log subprocess error: {e}")
 
@@ -408,7 +408,7 @@ def build_site(args):
 
         # build recent-pages.html
         logger.debug(f"build recent-pages.html with {config['recent_changes_count']} entries.")
-        no_edit_url_pages = [pattern.replace('.md', '*') for pattern in (config['no_edit_url_pages'] or [])]
+        no_edit_url_pages = [pattern.replace('.md', '*') for pattern in (config.get('no_edit_url_pages') or [])]
         filtered_pages = [page for page in all_pages_chrono if not any(Path(page['path']).match(no_edit) for no_edit in no_edit_url_pages)]
         recent_pages = filtered_pages[:config['recent_changes_count']]
         html = render_template('recent-pages.html',
@@ -448,7 +448,7 @@ def init_site(directory):
         # create and initialize directory
         logger.info(f"Creating directory {init_dir}")
         Path(init_dir).mkdir(parents=True, exist_ok=True)
-        
+
     # Define the source template directory
     script_dir = Path(__file__).parent
     templates_dir = script_dir / "templates"
@@ -466,7 +466,7 @@ def init_site(directory):
         # copy .gitignore to the new directory root; append if an ignore file exists
         gitignore_file = f"{init_dir}/.gitignore"
         if Path(gitignore_file).exists():
-            with open(templates_dir / "gitignore-template.txt",'r') as source, open(gitignore_file, 'a') as target:
+            with open(templates_dir / "gitignore-template.txt") as source, open(gitignore_file, 'a') as target:
                 target.write(source.read())
         else:
             shutil.copy(templates_dir / "gitignore-template.txt", init_dir / ".gitignore")
@@ -474,7 +474,7 @@ def init_site(directory):
         if not Path(f"{init_dir}/.github/").exists():
             shutil.copytree(templates_dir / "dot-github", init_dir / ".github")
             workflow_fname = f"{init_dir}/.github/workflows/gh-pages.yml"
-            with open(workflow_fname, 'r') as file:
+            with open(workflow_fname) as file:
                 lines = file.readlines()
             for i, line in enumerate(lines):
                 if 'REPOSITORYNAME' in line:
@@ -495,7 +495,7 @@ def init_site(directory):
         logger.debug(f"template file copy successful in {init_dir}")
     except Exception as e:
         logger.error(f"Failed to initialize project: {e}")
-    
+
     # initialize configuration file
     logger.info(f"get and write config info into {init_dir}/.markpub/markpub.yaml")
     # get configuration input
@@ -509,7 +509,7 @@ def init_site(directory):
         git_repo = f"https://{git_repo}" if not git_repo.startswith("https://") else git_repo
 
     # read in markpub.yaml template
-    with open(templates_dir / 'markpub-template.yaml','r',encoding='utf-8') as f:
+    with open(templates_dir / 'markpub-template.yaml',encoding='utf-8') as f:
         config_doc = yaml.safe_load(f)
         config_doc['wiki_title'] = website_title
         config_doc['author'] = author_name
@@ -552,7 +552,7 @@ def main():
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
     parser_build.set_defaults(cmd='build')
-    
+
     args = parser.parse_known_args()
     logger.info(args)
 

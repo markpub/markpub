@@ -44,7 +44,7 @@ class EmbeddedImageDoubleSquareBracketLink(SpanToken):
     Defines embedded image double square bracket link (span).
     """
     pattern = re.compile(r"\!\[\[ *(.+?)\.(png|jpg|jpeg|gif|svg|webp) *(\| *.+?)? *\]\]")
-    
+
     def __init__(self, match):
         # get alt text into target and filename into content
         self.content = match.group(1) + '.' + match.group(2)
@@ -139,7 +139,7 @@ class MassiveWikiRenderer(HTMLRenderer):
 
     def render_transcluded_double_square_bracket_link(self, token):
         logger.debug("TRANSCLUDED file_id: %s", self._file_id)
-        logger.debug("TRANSCLUDED fileroot: %s", self._fileroot)        
+        logger.debug("TRANSCLUDED fileroot: %s", self._fileroot)
         logger.debug("TRANSCLUDED token: %s", token)
         target = token.target
         logger.debug("TRANSCLUDED token.target: %s", token.target)
@@ -159,7 +159,7 @@ class MassiveWikiRenderer(HTMLRenderer):
                 logger.debug("TRANSCLUDED _tc_dict: %s", self._tc_dict)
                 transclude_path = f"{self._fileroot}{wikilink_value['fs_path']}"
                 logger.debug(f"TRANSCLUDED loading contents of '{transclude_path}'")
-                with open(transclude_path, 'r') as infile:
+                with open(transclude_path) as infile:
                     inner = infile.read()
                 rendered_doc = self.render(Document(inner))
                 htmlpath = wikilink_value['html_path']
