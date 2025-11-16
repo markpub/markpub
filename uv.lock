@@ -46,7 +46,7 @@ dependencies = [
     { name = "six" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "pytest" },
     { name = "ruff" },
@@ -58,13 +58,16 @@ requires-dist = [
     { name = "markpub-themes", specifier = ">=1.0.1" },
     { name = "markupsafe", specifier = ">=3.0.2" },
     { name = "mistletoe", specifier = ">=1.4.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.1" },
     { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "pyyaml", specifier = ">=6.0.2" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.14.2" },
     { name = "six", specifier = ">=1.17.0" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.4.1" },
+    { name = "ruff", specifier = ">=0.14.2" },
+]
 
 [[package]]
 name = "markpub-themes"
