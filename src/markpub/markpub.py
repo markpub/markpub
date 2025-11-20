@@ -451,6 +451,7 @@ def init_site(directory):
 
     # Define the source template directory
     script_dir = Path(__file__).parent
+    logger.debug(f"script_dir: {script_dir}")
     templates_dir = script_dir / "templates"
     # Copy files from templates
     try:
@@ -482,10 +483,7 @@ def init_site(directory):
                     break
             with open(workflow_fname, 'w') as file:
                 file.writelines(lines)
-        # copy website themes directory
-#        default_theme_dir = markpub_themes.get_theme_path('dolce')
-#        shutil.copytree(default_theme_dir, init_dir / ".markpub/themes/dolce")
-        # create .markpub dir
+        # create .markpub directory
         Path(f"{init_dir}/.markpub").mkdir(parents=True, exist_ok=True)
         # copy pip req'ts, javascript, and node info
         shutil.copy(templates_dir / "requirements.txt", init_dir / ".markpub" / "requirements.txt")
