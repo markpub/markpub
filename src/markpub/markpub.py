@@ -545,7 +545,6 @@ def main():
     parser_build.add_argument('-i', '--input', required=True, help='input directory of Markdown files')
     parser_build.add_argument('-o', '--output', required=True, help='output website directory')
     parser_build.add_argument('--config', '-c', default='./markpub.yaml', help='path to YAML config file')
-    parser_build.add_argument('--theme', '-t', help='path to directory of HTML theme filess')
     parser_build.add_argument('--root', '-r', default='', help='name for website root directory (to host GitHub Pages)')
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
