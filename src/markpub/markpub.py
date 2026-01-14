@@ -8,10 +8,10 @@ APPNAME = 'MarkPub'
 
 # setup logging
 import logging, os
-log_level = os.environ.get('LOGLEVEL', 'WARNING').upper()
+log_level = os.environ.get('LOGLEVEL', 'INFO').upper()
 
 logging.basicConfig(
-    level=getattr(logging, log_level, 'WARNING'),
+    level=getattr(logging, log_level, 'INFO'),
     format="%(asctime)s - %(name)s - %(levelname)s: %(filename)s:%(lineno)d - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
@@ -132,12 +132,12 @@ def datetime_date_serializer(o):
 # build website
 def build_site(args):
     logger.debug("Building ....")
-    logger.info("args: %s", args)
+    logger.debug("args: %s", args)
     logger.info(f"build website in {args[0].output} from Markdown files in {args[0].input}")
 
     # read configuration file
     config_file = Path(args[0].config).resolve().as_posix()
-    logger.info(f"using config file: {config_file}")
+    logger.debug(f"using config file: {config_file}")
     config = load_config(Path(config_file).resolve().as_posix())
     # set theme directory
     try:
@@ -152,7 +152,7 @@ def build_site(args):
         print(f"ERROR: {e}\t- Check 'theme:' value in 'markpub.yaml' file.")
         return
 
-    logger.info(f"using website theme directory: {theme_dir}")
+    logger.debug(f"using website theme directory: {theme_dir}")
 
     if 'recent_changes_count' not in config:
         config['recent_changes_count'] = 5
@@ -293,7 +293,7 @@ def build_site(args):
             if Path(file).suffix == '.md':
                 to_links = find_tolinks(file)
                 for page in to_links:
-                    logger.info("on page %s add backlink to page %s", Path(page).name, wiki_pagelinks[Path(file).stem.lower()]['html_path'])
+                    logger.debug("on page %s add backlink to page %s", Path(page).name, wiki_pagelinks[Path(file).stem.lower()]['html_path'])
                     if ( Path(page).name.lower() in wiki_pagelinks and
                          not any(wiki_pagelinks[Path(file).stem.lower()]['html_path'] in t for t in wiki_pagelinks[Path(page).name.lower()]['backlinks']) ):
                         backlink_tuple = (wiki_pagelinks[Path(file).stem.lower()]['html_path'],Path(file).stem)
@@ -314,7 +314,7 @@ def build_site(args):
             # make needed subdirectories
             Path(dir_output+clean_filepath).parent.mkdir(parents=True, exist_ok=True)
             if Path(file).suffix == '.md':
-                logger.info("Rendering %s", file)
+                logger.debug("Rendering %s", file)
                 # parse Markdown file
                 markdown_text, front_matter = read_markdown_and_front_matter(Path(file))
                 if front_matter is False:
@@ -342,8 +342,8 @@ def build_site(args):
                         logger.debug(f"subprocess result: '{p.stdout.decode('utf-8')}'")
                         (date, author, change) = p.stdout.decode('utf-8')[1:-2].split('\t', 2)
                         date = parse(date).astimezone(datetime.UTC).strftime("%Y-%m-%d, %H:%M")
-                    except Exception as e:
-                        logger.error(f"git log subprocess error: {e}")
+                    except Exception:
+                        logger.info(f"Ignoring '{Path(file).name}'; not in git log.")
 
                 # remember this page for All Pages
                 # strip Markdown headers and add truncated content (used for recent_pages)
@@ -446,7 +446,7 @@ def init_site(directory):
              return
     else:
         # create and initialize directory
-        logger.info(f"Creating directory {init_dir}")
+        logger.debug(f"Creating directory {init_dir}")
         Path(init_dir).mkdir(parents=True, exist_ok=True)
 
     # Define the source template directory
@@ -495,7 +495,7 @@ def init_site(directory):
         logger.error(f"Failed to initialize project: {e}")
 
     # initialize configuration file
-    logger.info(f"get and write config info into {init_dir}/.markpub/markpub.yaml")
+    logger.debug(f"get and write config info into {init_dir}/.markpub/markpub.yaml")
     # get configuration input
     website_title = input("Enter the website title: ")
     if not website_title: # if no title entered use init directory name
@@ -551,7 +551,7 @@ def main():
     parser_build.set_defaults(cmd='build')
 
     args = parser.parse_known_args()
-    logger.info(args)
+    logger.debug(args)
 
     match args[0].cmd:
         case 'init':
