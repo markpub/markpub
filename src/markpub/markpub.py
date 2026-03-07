@@ -255,7 +255,7 @@ def build_site(args):
         sidebar_file = config.get('sidebar')
         allfiles = [f for f in allfiles if not (
             any(ex_dir in f for ex_dir in excluded_dirs) or
-            (sidebar_file is not None and f.endswith(sidebar_file)))]
+            (sidebar_file is not None and Path(f).name == sidebar_file))]
 
         # read wiki content and build wikilinks dictionary; lunr index lists
         lunr_idx_data=[]
