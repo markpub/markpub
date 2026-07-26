@@ -133,6 +133,9 @@ Build options:
 - `--root`: Website root directory name
 - `--lunr`: Enable full-text search
 - `--commits`: Include Git commit information
+- `--zip`: Build a downloadable zip archive of the site's Markdown pages
+
+With `--zip`, every build writes a fresh archive of the published Markdown pages (unlisted pages excluded, sidebar included) into the output directory, named `{repo-name}-{YYYY-MM-DD-HHMM}Z.zip` — the repository name plus the UTC build time. The pages sit inside a single top-level directory named like the archive, so unzipping produces one dated folder, ready to open as an Obsidian vault. Because the filename is dated, themes should link to it with the `zip_sitepath` (site-absolute path) and `zip_filename` template variables, which are empty strings when `--zip` is not used.
 
 ### Search Functionality
 

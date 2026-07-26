@@ -34,6 +34,7 @@ import time
 import traceback
 from urllib.parse import urlparse
 import yaml
+import zipfile
 
 # Markpub libraries and modules - mistletoe based Markdown to HTML conversion
 from mistletoe import Document
@@ -55,6 +56,21 @@ def git_forge_proper_name(git_edit_url):
         return forge_loc
     else:
         return forge_name
+
+# derive a repository name for zip archive naming;
+# use the git remote URL (the checkout directory name is not meaningful on CI
+# hosts), fall back to a slug of the config wiki_title
+def get_repo_name(dir_wiki, config):
+    try:
+        p = subprocess.run(["git", "-C", dir_wiki, "remote", "get-url", "origin"], capture_output=True, check=True)
+        remote_url = p.stdout.decode('utf-8').strip()
+        name = re.split(r'[/:]', remote_url.rstrip('/'))[-1].removesuffix('.git')
+        if name:
+            return name
+    except Exception:
+        logger.debug("no usable git remote; falling back to wiki_title for zip name")
+    slug = re.sub(r'[^A-Za-z0-9]+', '-', config.get('wiki_title') or 'wiki').strip('-').lower()
+    return slug or 'wiki'
 
 def markdown_convert(markdown_text, rootdir, fileroot, file_id, websiteroot):
     with MassiveWikiRenderer(rootdir=rootdir, fileroot=fileroot, wikilinks=wiki_pagelinks, file_id=file_id, websiteroot=websiteroot) as renderer:
@@ -177,6 +193,8 @@ def build_site(args):
             'sidebar_body': sidebar_body,
             'lunr_index_sitepath': lunr_index_sitepath,
             'lunr_posts_sitepath': lunr_posts_sitepath,
+            'zip_filename': zip_filename,
+            'zip_sitepath': zip_sitepath,
             'websiteroot': websiteroot,
         }
         # Merge common_args with any additional kwargs
@@ -229,6 +247,20 @@ def build_site(args):
         # needed to feed to themes
         lunr_index_sitepath = ''
         lunr_posts_sitepath = ''
+
+    # one timestamp for this build; used for zip archive name and page footers
+    build_datetime = datetime.datetime.now(datetime.UTC)
+
+    # set up zip_filename and zip_sitepath
+    if (args[0].zip):
+        zip_basename = f"{get_repo_name(dir_wiki, config)}-{build_datetime.strftime('%Y-%m-%d-%H%M')}Z"
+        zip_filename = f"{zip_basename}.zip" # needed for next two variables
+        zip_filepath = Path(dir_output) / zip_filename # local filesystem
+        zip_sitepath = f"{websiteroot}/{zip_filename}" # website
+    else:
+        # needed to feed to themes
+        zip_filename = ''
+        zip_sitepath = ''
 
     # render the wiki
     try:
@@ -302,7 +334,8 @@ def build_site(args):
         # render all the Markdown files
         logger.debug("copy wiki to output; render .md files to HTML")
         all_pages = []
-        build_time = datetime.datetime.now(datetime.UTC).strftime("%A, %B %d, %Y at %H:%M UTC")
+        zip_members = []
+        build_time = build_datetime.strftime("%A, %B %d, %Y at %H:%M UTC")
 
         if 'sidebar' in config:
             sidebar_body = sidebar_convert_markdown(Path(dir_wiki) / config['sidebar'], rootdir, args[0].input, websiteroot)
@@ -320,6 +353,9 @@ def build_site(args):
                 if front_matter is False:
                     print(f"NOTE: YAML syntax error in front matter of '{Path(file)}'")
                     front_matter = {}
+                # remember page for --zip archive; skip unlisted pages
+                if args[0].zip and not front_matter.get('unlisted'):
+                    zip_members.append(file)
                 # output JSON of front matter
                 (Path(dir_output+clean_filepath).with_suffix(".json")).write_text(json.dumps(front_matter, indent=2, default=datetime_date_serializer))
                 # render and output HTML (empty edit_url on README and Sidebar pages)
@@ -368,6 +404,15 @@ def build_site(args):
             logger.debug("Copy all original files")
             logger.debug("%s -->  %s",Path(file), Path(dir_output+clean_filepath))
             shutil.copy(Path(file), Path(dir_output+clean_filepath))
+
+        # build zip archive of the site's Markdown pages if --zip
+        if (args[0].zip):
+            logger.debug("building zip archive: %s", zip_filepath)
+            if sidebar_file is not None and (Path(dir_wiki) / sidebar_file).exists():
+                zip_members.append((Path(dir_wiki) / sidebar_file).as_posix())
+            with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_DEFLATED) as zip_archive:
+                for file in zip_members:
+                    zip_archive.write(file, f"{zip_basename}/{Path(file).relative_to(dir_wiki).as_posix()}")
 
         # build Lunr search index if --lunr
         if (args[0].lunr):
@@ -548,6 +593,7 @@ def main():
     parser_build.add_argument('--root', '-r', default='', help='name for website root directory (to host GitHub Pages)')
     parser_build.add_argument('--lunr', action='store_true', help='include this to create lunr index (requires npm and lunr to be installed, read docs)')
     parser_build.add_argument('--commits', action='store_true', help='include this to read Git commit messages and times, for All Pages')
+    parser_build.add_argument('--zip', action='store_true', help='include this to build a zip archive of the Markdown pages, downloadable from the website')
     parser_build.set_defaults(cmd='build')
 
     args = parser.parse_known_args()
