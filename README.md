@@ -58,6 +58,7 @@ Build a static website from Markdown files.
 - `--root, -r <name>` - Website root directory name (needed for GitHub Pages hosting)
 - `--lunr` - Create lunr search index (requires npm and lunr to be installed)
 - `--commits` - Include Git commit messages and times in All Pages
+- `--zip` - Build a zip archive of the site's Markdown pages into the output, named `{repo-name}-{YYYY-MM-DD-HHMM}Z.zip`; themes can link to it via the `zip_sitepath` and `zip_filename` template variables
 
 **Examples:**
 ```shell
@@ -66,6 +67,9 @@ markpub build -i my-wiki -o my-wiki-site
 
 # Build with search
 markpub build -i my-wiki -o my-wiki-site --lunr
+
+# Build with a downloadable zip of the Markdown pages
+markpub build -i my-wiki -o my-wiki-site --zip
 
 # Build for GitHub Pages with Git history
 markpub build -i my-wiki -o my-wiki-site --root my-repo --commits
